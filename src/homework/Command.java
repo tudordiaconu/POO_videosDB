@@ -56,4 +56,13 @@ public class Command {
             user.getHistory().put(title, 1);
         }
     }
+
+    public static void favorite(String username, String title, Database database) {
+        User user = database.getUserMap().get(username);
+        if (user.getHistory().containsKey(title)) {
+            if (!user.getFavoriteMovies().contains(title)) {
+                user.getFavoriteMovies().add(title);
+            }
+        }
+    }
 }

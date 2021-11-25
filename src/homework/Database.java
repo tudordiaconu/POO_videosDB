@@ -67,7 +67,11 @@ public class Database {
                                                     getHistory().get(actionInputData.getTitle())));
                 }
 
-
+                if (Objects.equals(actionInputData.getType(), "favorite")) {
+                    Command.favorite(actionInputData.getUsername(), actionInputData.getTitle(), this);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
+                                            actionInputData.getTitle() + " was added as favourite"));
+                }
             }
         }
     }
