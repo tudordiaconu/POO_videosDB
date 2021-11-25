@@ -55,7 +55,7 @@ public class Database {
         this.addSerialsToDatabase();
         this.addUsersToDatabase();
     }
-
+    
     public void command(Writer writer, JSONArray arrayResult) throws IOException {
         for (ActionInputData actionInputData : input.getCommands()) {
             if (Objects.equals(actionInputData.getActionType(), "command")) {
@@ -66,6 +66,8 @@ public class Database {
                                             this.userMap.get(actionInputData.getUsername()).
                                                     getHistory().get(actionInputData.getTitle())));
                 }
+
+
             }
         }
     }

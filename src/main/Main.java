@@ -71,7 +71,7 @@ public final class Main {
         Input input = inputLoader.readData();
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
-       // arrayResult.add(fileWriter.writeFile(1,"","success -> Brexit: The Uncivil War was viewed with total views of 1"));
+        // arrayResult.add(fileWriter.writeFile(1,"","success -> Brexit: The Uncivil War was viewed with total views of 1"));
         //TODO add here the entry point to your implementation
 
         Database database = new Database(input);
