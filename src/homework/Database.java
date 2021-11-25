@@ -61,16 +61,23 @@ public class Database {
             if (Objects.equals(actionInputData.getActionType(), "command")) {
                 if (Objects.equals(actionInputData.getType(), "view")) {
                     Command.view(actionInputData.getUsername(), actionInputData.getTitle(), this);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
-                                            actionInputData.getTitle() + " was viewed with total views of " +
-                                            this.userMap.get(actionInputData.getUsername()).
-                                                    getHistory().get(actionInputData.getTitle())));
+                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
+                            actionInputData.getTitle() + " was viewed with total views of " +
+                            this.userMap.get(actionInputData.getUsername()).
+                                    getHistory().get(actionInputData.getTitle())));
                 }
 
                 if (Objects.equals(actionInputData.getType(), "favorite")) {
                     Command.favorite(actionInputData.getUsername(), actionInputData.getTitle(), this);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
-                                            actionInputData.getTitle() + " was added as favourite"));
+                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
+                            actionInputData.getTitle() + " was added as favourite"));
+                }
+
+                if (Objects.equals(actionInputData.getType(), "rating")) {
+                    Command.rating(actionInputData.getUsername(), actionInputData.getTitle(), this);
+                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
+                            actionInputData.getTitle() + " was rated with " + actionInputData.getGrade() +
+                            " by " + actionInputData.getUsername()));
                 }
             }
         }

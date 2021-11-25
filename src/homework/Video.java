@@ -9,12 +9,14 @@ public class Video {
     private final int year;
     private final ArrayList<String> cast;
     private final ArrayList<String> genres;
+    private final ArrayList<Double> ratings;
 
     public Video(ShowInput showInput) {
         this.title = showInput.getTitle();
         this.year = showInput.getYear();
         this.cast = showInput.getCast();
         this.genres = showInput.getGenres();
+        this.ratings = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -31,5 +33,9 @@ public class Video {
 
     public ArrayList<String> getGenres() {
         return genres;
+    }
+
+    public ArrayList<Double> getRatings() {
+        return ratings;
     }
 }

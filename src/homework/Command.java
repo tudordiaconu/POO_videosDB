@@ -65,4 +65,15 @@ public class Command {
             }
         }
     }
+
+    public static void rating(String username, String title, Database database) {
+        User user = database.getUserMap().get(username);
+        if (database.getMovieMap().containsKey(title)) {
+            Movie movie = database.getMovieMap().get(title);
+            for (ActionInputData actionInputData : database.input.getCommands()) {
+                movie.getRatings().add(actionInputData.getGrade());
+            }
+        }
+
+    }
 }
