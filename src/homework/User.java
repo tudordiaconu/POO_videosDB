@@ -1,8 +1,10 @@
 package homework;
 
+import entertainment.Season;
 import fileio.UserInputData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class User {
@@ -10,12 +12,24 @@ public class User {
     private final String subscriptionType;
     private final Map<String, Integer> history;
     private final ArrayList<String> favoriteMovies;
+    private final Map<String, Double> moviesGivenRatings;
+    private final Map<Season, Double> seasonsGivenRatings;
 
     public User(UserInputData userInputData) {
         this.username = userInputData.getUsername();
         this.subscriptionType = userInputData.getSubscriptionType();
         this.history = userInputData.getHistory();
         this.favoriteMovies = userInputData.getFavoriteMovies();
+        this.moviesGivenRatings = new HashMap<>();
+        this.seasonsGivenRatings = new HashMap<>();
+    }
+
+    public Map<String, Double> getMoviesGivenRatings() {
+        return moviesGivenRatings;
+    }
+
+    public Map<Season, Double> getSeasonsGivenRatings() {
+        return seasonsGivenRatings;
     }
 
     public String getUsername() {

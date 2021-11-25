@@ -23,6 +23,24 @@ public class Serial extends Video{
     }
 
     @Override
+    public double getRating(){
+        double ratingShow;
+        double showSum = 0;
+
+        for(Season season : this.seasons) {
+            double seasonSum = 0;
+            for(int i = 0; i < season.getRatings().size(); i++) {
+                seasonSum = seasonSum + season.getRatings().get(i);
+            }
+            double seasonRating = seasonSum / season.getRatings().size();
+            showSum = showSum + seasonRating;
+        }
+
+        ratingShow = showSum / this.numberOfSeasons;
+        return ratingShow;
+    }
+
+    @Override
     public String toString() {
         return "Serial{" + " title= "
                 + super.getTitle() + " " + " year= "

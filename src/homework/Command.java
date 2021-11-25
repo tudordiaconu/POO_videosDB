@@ -1,53 +1,9 @@
 package homework;
 
+import entertainment.Season;
 import fileio.ActionInputData;
 
 public class Command {
-    private final int actionId;
-    private final String actionType;
-    private final String type;
-    private final String username;
-    private final String title;
-
-    public Command(ActionInputData actionInputData) {
-        this.actionId = actionInputData.getActionId();
-        this.actionType = actionInputData.getActionType();
-        this.type = actionInputData.getType();
-        this.username = actionInputData.getUsername();
-        this.title = actionInputData.getTitle();
-    }
-
-    public int getActionId() {
-        return actionId;
-    }
-
-    public String getActionType() {
-        return actionType;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public String toString() {
-        return "Command{" +
-                "actionId=" + actionId +
-                ", actionType='" + actionType + '\'' +
-                ", type='" + type + '\'' +
-                ", username='" + username + '\'' +
-                ", title='" + title + '\'' +
-                '}';
-    }
-
     public static void view(String username, String title, Database database) {
         User user = database.getUserMap().get(username);
         if (user.getHistory().containsKey(title)) {
@@ -57,23 +13,36 @@ public class Command {
         }
     }
 
-    public static void favorite(String username, String title, Database database) {
+    public static int favorite(String username, String title, Database database) {
+        int alreadyExists = 0;
+
         User user = database.getUserMap().get(username);
+
         if (user.getHistory().containsKey(title)) {
             if (!user.getFavoriteMovies().contains(title)) {
                 user.getFavoriteMovies().add(title);
+                alreadyExists = 1;
+            } else {
+                alreadyExists = 2;
             }
         }
+
+        return alreadyExists;
     }
 
-    public static void rating(String username, String title, Database database) {
+    public static void rating(String username, String title, Database database, ActionInputData actionInputData) {
         User user = database.getUserMap().get(username);
+
         if (database.getMovieMap().containsKey(title)) {
             Movie movie = database.getMovieMap().get(title);
-            for (ActionInputData actionInputData : database.input.getCommands()) {
-                movie.getRatings().add(actionInputData.getGrade());
-            }
-        }
+            movie.getRatings().add(actionInputData.getGrade());
+            user.getMoviesGivenRatings().put(title, actionInputData.getGrade());
 
+        } else if (database.getSerialMap().containsKey(title)) {
+            Serial serial = database.getSerialMap().get(title);
+            Season season = serial.getSeasons().get(actionInputData.getSeasonNumber() - 1);
+            season.getRatings().add(actionInputData.getGrade());
+            user.getSeasonsGivenRatings().put(season, actionInputData.getGrade());
+        }
     }
 }

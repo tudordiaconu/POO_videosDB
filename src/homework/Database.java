@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -58,8 +59,9 @@ public class Database {
     
     public void command(Writer writer, JSONArray arrayResult) throws IOException {
         for (ActionInputData actionInputData : input.getCommands()) {
-            if (Objects.equals(actionInputData.getActionType(), "command")) {
-                if (Objects.equals(actionInputData.getType(), "view")) {
+            if (actionInputData.getActionType().equals("command")) {
+
+                if (actionInputData.getType().equals("view")) {
                     Command.view(actionInputData.getUsername(), actionInputData.getTitle(), this);
                     arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
                             actionInputData.getTitle() + " was viewed with total views of " +
@@ -67,19 +69,35 @@ public class Database {
                                     getHistory().get(actionInputData.getTitle())));
                 }
 
-                if (Objects.equals(actionInputData.getType(), "favorite")) {
-                    Command.favorite(actionInputData.getUsername(), actionInputData.getTitle(), this);
-                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
-                            actionInputData.getTitle() + " was added as favourite"));
+                if (actionInputData.getType().equals("favorite")) {
+                    int alreadyExists = Command.favorite(actionInputData.getUsername(), actionInputData.getTitle(), this);
+
+                    if (alreadyExists == 1) {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
+                                actionInputData.getTitle() + " was added as favourite"));
+                    } else if (alreadyExists == 2) {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
+                                actionInputData.getTitle() + " is already in favourite list"));
+                    } else {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
+                                actionInputData.getTitle() + " is not seen"));
+                    }
                 }
 
-                if (Objects.equals(actionInputData.getType(), "rating")) {
-                    Command.rating(actionInputData.getUsername(), actionInputData.getTitle(), this);
+                if (actionInputData.getType().equals("rating")) {
+                    Command.rating(actionInputData.getUsername(), actionInputData.getTitle(), this, actionInputData);
                     arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
                             actionInputData.getTitle() + " was rated with " + actionInputData.getGrade() +
                             " by " + actionInputData.getUsername()));
                 }
             }
+
+            /*if(actionInputData.getActionType().equals("query")) {
+                if(actionInputData.getObjectType().equals("users")) {
+                    List<User> sortedUsers = Query.user(this, actionInputData);
+                    int numberOfUsers = actionInputData.getNumber();
+                }
+            }*/
         }
     }
 

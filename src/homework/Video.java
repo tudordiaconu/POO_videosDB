@@ -4,7 +4,7 @@ import fileio.ShowInput;
 
 import java.util.ArrayList;
 
-public class Video {
+public abstract class Video {
     private final String title;
     private final int year;
     private final ArrayList<String> cast;
@@ -18,6 +18,8 @@ public class Video {
         this.genres = showInput.getGenres();
         this.ratings = new ArrayList<>();
     }
+
+    public abstract  double getRating();
 
     public String getTitle() {
         return title;
