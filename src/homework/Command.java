@@ -30,19 +30,30 @@ public class Command {
         return alreadyExists;
     }
 
-    public static void rating(String username, String title, Database database, ActionInputData actionInputData) {
+    public static int rating(String username, String title, Database database, ActionInputData actionInputData) {
         User user = database.getUserMap().get(username);
+        int found = 0;
 
         if (database.getMovieMap().containsKey(title)) {
-            Movie movie = database.getMovieMap().get(title);
-            movie.getRatings().add(actionInputData.getGrade());
-            user.getMoviesGivenRatings().put(title, actionInputData.getGrade());
-
+            if (user.getHistory().containsKey(title)) {
+                Movie movie = database.getMovieMap().get(title);
+                movie.getRatings().add(actionInputData.getGrade());
+                user.getMoviesGivenRatings().put(title, actionInputData.getGrade());
+                user.setNrGivenRatings(user.getNrGivenRatings() + 1);
+                found = 1;
+            }
         } else if (database.getSerialMap().containsKey(title)) {
-            Serial serial = database.getSerialMap().get(title);
-            Season season = serial.getSeasons().get(actionInputData.getSeasonNumber() - 1);
-            season.getRatings().add(actionInputData.getGrade());
-            user.getSeasonsGivenRatings().put(season, actionInputData.getGrade());
+            if (user.getHistory().containsKey(title)) {
+                Serial serial = database.getSerialMap().get(title);
+                Season season = serial.getSeasons().get(actionInputData.getSeasonNumber() - 1);
+                //serial.getRatings().add(actionInputData.getGrade());
+                season.getRatings().add(actionInputData.getGrade());
+                user.getSeasonsGivenRatings().put(season, actionInputData.getGrade());
+                user.setNrGivenRatings(user.getNrGivenRatings() + 1);
+                found = 1;
+            }
         }
+
+        return found;
     }
 }

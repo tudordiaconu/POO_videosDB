@@ -9,21 +9,37 @@ import java.util.List;
 import java.util.Map;
 
 public class Query {
-    public static List<User> user(Database database, ActionInputData actionInputData) {
+    public static ArrayList<String> user(Database database, ActionInputData actionInputData) {
+        ArrayList<String> usernames = new ArrayList<>();
+        List<User> users = database.getUserMap().values().stream()
 
-        return database.getUserMap().values().stream()
+                .sorted((user1, user2) -> {
+                    int firstNumberRatings = user1.getNrGivenRatings();
+                    int secondNumberRatings = user2.getNrGivenRatings();
 
-                .sorted((o1, o2) -> {
-                    int firstNumberRatings = o1.getMoviesGivenRatings().size() + o1.getSeasonsGivenRatings().size();
-                    int secondNumberRatings = o2.getMoviesGivenRatings().size() + o2.getSeasonsGivenRatings().size();
-
-                    if (firstNumberRatings >= secondNumberRatings) {
-                        return 1;
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return firstNumberRatings - secondNumberRatings;
                     } else {
-                        return 0;
+                        return secondNumberRatings - firstNumberRatings;
                     }
                 })
 
                 .toList();
+
+        for (User user : users) {
+            if (user.getNrGivenRatings() > 0) {
+                usernames.add(user.getUsername());
+            }
+        }
+
+        int n = actionInputData.getNumber();
+
+        if (usernames.size() > n) {
+            while (usernames.size() != n) {
+                usernames.remove(usernames.size() - 1);
+            }
+        }
+
+        return usernames;
     }
 }

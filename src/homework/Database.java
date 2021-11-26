@@ -4,10 +4,7 @@ import fileio.*;
 import org.json.simple.JSONArray;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Database {
     private Map<String, Actor> actorMap;
@@ -56,7 +53,8 @@ public class Database {
         this.addSerialsToDatabase();
         this.addUsersToDatabase();
     }
-    
+
+    @SuppressWarnings("unchecked")
     public void command(Writer writer, JSONArray arrayResult) throws IOException {
         for (ActionInputData actionInputData : input.getCommands()) {
             if (actionInputData.getActionType().equals("command")) {
@@ -85,19 +83,25 @@ public class Database {
                 }
 
                 if (actionInputData.getType().equals("rating")) {
-                    Command.rating(actionInputData.getUsername(), actionInputData.getTitle(), this, actionInputData);
-                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
-                            actionInputData.getTitle() + " was rated with " + actionInputData.getGrade() +
-                            " by " + actionInputData.getUsername()));
+                    int found = Command.rating(actionInputData.getUsername(), actionInputData.getTitle(), this, actionInputData);
+
+                    if (found == 1) {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
+                                actionInputData.getTitle() + " was rated with " + actionInputData.getGrade() +
+                                " by " + actionInputData.getUsername()));
+                    } else {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
+                                actionInputData.getTitle() + " is not seen"));
+                    }
                 }
             }
 
-            /*if(actionInputData.getActionType().equals("query")) {
+            if(actionInputData.getActionType().equals("query")) {
                 if(actionInputData.getObjectType().equals("users")) {
-                    List<User> sortedUsers = Query.user(this, actionInputData);
-                    int numberOfUsers = actionInputData.getNumber();
+                    ArrayList<String> sortedUsers = Query.user(this, actionInputData);
+                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedUsers));
                 }
-            }*/
+            }
         }
     }
 

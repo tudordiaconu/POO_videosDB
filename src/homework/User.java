@@ -14,6 +14,7 @@ public class User {
     private final ArrayList<String> favoriteMovies;
     private final Map<String, Double> moviesGivenRatings;
     private final Map<Season, Double> seasonsGivenRatings;
+    private int nrGivenRatings;
 
     public User(UserInputData userInputData) {
         this.username = userInputData.getUsername();
@@ -22,6 +23,15 @@ public class User {
         this.favoriteMovies = userInputData.getFavoriteMovies();
         this.moviesGivenRatings = new HashMap<>();
         this.seasonsGivenRatings = new HashMap<>();
+        this.nrGivenRatings = 0;
+    }
+
+    public int getNrGivenRatings() {
+        return nrGivenRatings;
+    }
+
+    public void setNrGivenRatings(int nrGivenRatings) {
+        this.nrGivenRatings = nrGivenRatings;
     }
 
     public Map<String, Double> getMoviesGivenRatings() {
