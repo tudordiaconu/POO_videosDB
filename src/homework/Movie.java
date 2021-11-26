@@ -2,21 +2,20 @@ package homework;
 
 import fileio.ActionInputData;
 import fileio.MovieInputData;
-import fileio.ShowInput;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class Movie extends Video{
+public class Movie extends Video {
     private final int duration;
-    public Movie(MovieInputData movieInputData) {
+    public Movie(final MovieInputData movieInputData) {
         super(movieInputData);
         this.duration = movieInputData.getDuration();
     }
 
-    public static List<Movie> filterMoviesByYear(Database database, ActionInputData actionInputData) {
+    /** filters the movies by year */
+    public static List<Movie> filterMoviesByYear(final Database database,
+                                                 final ActionInputData actionInputData) {
         int year;
         List<Movie> filteredMoviesByYear;
         if (actionInputData.getFilters().get(0).get(0) != null) {
@@ -32,8 +31,10 @@ public class Movie extends Video{
         return filteredMoviesByYear;
     }
 
-    public static List<Movie> filterMoviesByGenre(Database database, ActionInputData actionInputData,
-                                                  List<Movie> filteredByYear) {
+    /** filters the movie by genre */
+    public static List<Movie> filterMoviesByGenre(final Database database,
+                                                  final ActionInputData actionInputData,
+                                                  final List<Movie> filteredByYear) {
         List<Movie> filteredMoviesByGenre;
 
         if (actionInputData.getFilters().get(1).get(0) != null) {
@@ -50,12 +51,13 @@ public class Movie extends Video{
         return filteredMoviesByGenre;
     }
 
+    /** calculates the rating of the movie */
     @Override
     public double getRating() {
         double rating;
         double movieSum = 0;
         int numberofRatings = this.getRatings().size();
-        for(int i = 0; i < numberofRatings; i++) {
+        for (int i = 0; i < numberofRatings; i++) {
             movieSum = movieSum + this.getRatings().get(i);
         }
 
@@ -63,18 +65,8 @@ public class Movie extends Video{
         return rating;
     }
 
-
+    /** getter for the duration */
     public int getDuration() {
         return duration;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" + "title= "
-                + super.getTitle() + "year= "
-                + super.getYear() + "duration= "
-                + duration + "cast {"
-                + super.getCast() + " }\n"
-                + "genres {" + super.getGenres() + " }\n";
     }
 }

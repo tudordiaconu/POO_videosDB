@@ -1,10 +1,18 @@
 package homework;
 
-import fileio.*;
+import fileio.Input;
+import fileio.MovieInputData;
 import org.json.simple.JSONArray;
-
+import fileio.Writer;
+import fileio.ActionInputData;
+import fileio.ActorInputData;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import fileio.SerialInputData;
+import fileio.UserInputData;
+
 
 public class Database {
     private Map<String, Actor> actorMap;
@@ -12,7 +20,7 @@ public class Database {
     private Map<String, Serial> serialMap;
     private Map<String, User> userMap;
 
-    public Input input;
+    private final Input input;
 
     private void addActorsToDatabase() {
         for (ActorInputData actorInputData : input.getActors()) {
@@ -42,7 +50,7 @@ public class Database {
         }
     }
 
-    public Database(Input input) {
+    public Database(final Input input) {
         this.actorMap = new HashMap<>();
         this.movieMap = new HashMap<>();
         this.serialMap = new HashMap<>();
@@ -54,103 +62,126 @@ public class Database {
         this.addUsersToDatabase();
     }
 
+    /** method which does the commands given to the input */
     @SuppressWarnings("unchecked")
-    public void command(Writer writer, JSONArray arrayResult) throws IOException {
+    public void command(final Writer writer, final JSONArray arrayResult) throws IOException {
         for (ActionInputData actionInputData : input.getCommands()) {
             if (actionInputData.getActionType().equals("command")) {
 
                 if (actionInputData.getType().equals("view")) {
                     Command.view(actionInputData.getUsername(), actionInputData.getTitle(), this);
-                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
-                            actionInputData.getTitle() + " was viewed with total views of " +
-                            this.userMap.get(actionInputData.getUsername()).
+                    arrayResult.add(writer.writeFile(actionInputData.getActionId(),
+                            "", "success -> "
+                                    + actionInputData.getTitle()
+                                    + " was viewed with total views of "
+                                    + this.userMap.get(actionInputData.getUsername()).
                                     getHistory().get(actionInputData.getTitle())));
                 }
 
                 if (actionInputData.getType().equals("favorite")) {
-                    int alreadyExists = Command.favorite(actionInputData.getUsername(), actionInputData.getTitle(), this);
+                    int alreadyExists = Command.favorite(actionInputData.getUsername(),
+                            actionInputData.getTitle(), this);
 
                     if (alreadyExists == 1) {
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
-                                actionInputData.getTitle() + " was added as favourite"));
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(),
+                                "", "success -> "
+                                        + actionInputData.getTitle() + " was added as favourite"));
                     } else if (alreadyExists == 2) {
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
-                                actionInputData.getTitle() + " is already in favourite list"));
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(),
+                                "", "error -> " + actionInputData.getTitle()
+                                        + " is already in favourite list"));
                     } else {
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
-                                actionInputData.getTitle() + " is not seen"));
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(),
+                                "", "error -> " + actionInputData.getTitle() + " is not seen"));
                     }
                 }
 
                 if (actionInputData.getType().equals("rating")) {
-                    int found = Command.rating(actionInputData.getUsername(), actionInputData.getTitle(), this, actionInputData);
+                    int found = Command.rating(actionInputData.getUsername(),
+                            actionInputData.getTitle(), this, actionInputData);
 
                     if (found == 1) {
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
-                                actionInputData.getTitle() + " was rated with " + actionInputData.getGrade() +
-                                " by " + actionInputData.getUsername()));
-                    } else if (found == 0){
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
-                                actionInputData.getTitle() + " is not seen"));
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "success -> " + actionInputData.getTitle() + " was rated with "
+                                        + actionInputData.getGrade() + " by "
+                                        + actionInputData.getUsername()));
+                    } else if (found == 0) {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "error -> " + actionInputData.getTitle() + " is not seen"));
                     } else {
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
-                                actionInputData.getTitle() + " has been already rated"));
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "error -> " + actionInputData.getTitle()
+                                        + " has been already rated"));
                     }
                 }
             }
 
-            if(actionInputData.getActionType().equals("query")) {
-                if(actionInputData.getObjectType().equals("users")) {
+            if (actionInputData.getActionType().equals("query")) {
+                if (actionInputData.getObjectType().equals("users")) {
                     ArrayList<String> sortedUsers = Query.user(this, actionInputData);
-                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedUsers));
+                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                            "Query result: " + sortedUsers));
                 }
 
-                if(actionInputData.getObjectType().equals("actors")) {
+                if (actionInputData.getObjectType().equals("actors")) {
                     if (actionInputData.getCriteria().equals("awards")) {
                         ArrayList<String> sortedActors = Query.actorsAwards(this, actionInputData);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedActors));
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "Query result: " + sortedActors));
                     }
 
                     if (actionInputData.getCriteria().equals("average")) {
-                        ArrayList<String> sortedActors = Query.actorsAverage(this, actionInputData);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedActors));
+                        ArrayList<String> sortedActors = Query.actorsAverage(
+                                this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "Query result: " + sortedActors));
                     }
 
                     if (actionInputData.getCriteria().equals("filter_description")) {
-                        ArrayList<String> sortedActors = Query.actorsFilterDescription(this, actionInputData);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedActors));
+                        ArrayList<String> sortedActors = Query.actorsFilterDescription(
+                                this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "Query result: " + sortedActors));
                     }
                 }
 
-                if(actionInputData.getObjectType().equals("movies")) {
+                if (actionInputData.getObjectType().equals("movies")) {
                     if (actionInputData.getCriteria().equals("longest")) {
-                        ArrayList<String> sortedMovies = Query.moviesLongest(this, actionInputData);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedMovies));
+                        ArrayList<String> sortedMovies = Query.moviesLongest(
+                                this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "Query result: " + sortedMovies));
                     }
                 }
 
-                if(actionInputData.getObjectType().equals("shows")) {
+                if (actionInputData.getObjectType().equals("shows")) {
                     if (actionInputData.getCriteria().equals("longest")) {
-                        ArrayList<String> sortedSerials = Query.serialsLongest(this, actionInputData);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedSerials));
+                        ArrayList<String> sortedSerials = Query.serialsLongest(
+                                this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                    "Query result: " + sortedSerials));
                     }
                 }
             }
         }
     }
 
+    /** getter for hashmap of actors */
     public Map<String, Actor> getActorMap() {
         return actorMap;
     }
 
+    /** getter for hashmap of movies */
     public Map<String, Movie> getMovieMap() {
         return movieMap;
     }
 
+    /** getter for hashmap of serial */
     public Map<String, Serial> getSerialMap() {
         return serialMap;
     }
 
+    /** getter for hashmap of users*/
     public Map<String, User> getUserMap() {
         return userMap;
     }

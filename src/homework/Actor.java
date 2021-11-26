@@ -1,9 +1,13 @@
 package homework;
 
+import java.util.List;
 import actor.ActorsAwards;
 import fileio.ActorInputData;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Actor {
@@ -11,25 +15,26 @@ public class Actor {
     private final String careerDescription;
     private ArrayList<String> filmography;
 
-    private Map<String, Integer> awards;
-    public double averageRating;
+    private final Map<String, Integer> awards;
 
-    public Actor(ActorInputData actorInputData) {
+    public Actor(final ActorInputData actorInputData) {
         this.name = actorInputData.getName();
         this.careerDescription = actorInputData.getCareerDescription();
         this.filmography = actorInputData.getFilmography();
         this.awards = new HashMap<>();
-        for (Map.Entry<ActorsAwards, Integer> actorsAwards : actorInputData.getAwards().entrySet()) {
+        for (Map.Entry<ActorsAwards, Integer> actorsAwards
+                : actorInputData.getAwards().entrySet()) {
             String award = actorsAwards.getKey().toString();
             this.awards.put(award, actorsAwards.getValue());
         }
     }
 
-    public void getAverageRating(Database database) {
+    /** calculates average rating of an actor*/
+    public double getAverageRating(final Database database) {
         double rating = 0;
         int numberOfMoviesInMap = 0;
 
-        for(String video : filmography) {
+        for (String video : filmography) {
             if (database.getSerialMap().containsKey(video)) {
                 if (database.getSerialMap().get(video).getRating() != 0) {
                     rating += database.getSerialMap().get(video).getRating();
@@ -43,9 +48,10 @@ public class Actor {
             }
         }
 
-        this.averageRating = rating/numberOfMoviesInMap;
+        return rating / numberOfMoviesInMap;
     }
 
+    /** calculate total number of awards won*/
     public int getNumberAwards() {
         int number = 0;
         Collection<Integer> numAwards = awards.values();
@@ -56,33 +62,30 @@ public class Actor {
         return number;
     }
 
+    /**Getter for name*/
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /** Getter for carrer description */
     public String getCareerDescription() {
         return careerDescription;
     }
 
+    /** Getter for filmography */
     public ArrayList<String> getFilmography() {
         return filmography;
     }
 
-    public void setFilmography(ArrayList<String> filmography) {
-        this.filmography = filmography;
-    }
-
+    /** Getter for the map of awards*/
     public Map<String, Integer> getAwards() {
         return awards;
     }
 
-    public boolean checkAwards(List<String> awards) {
-        for (String award : awards) {
-            if(!this.getAwards().containsKey(award)) {
+    /** Checks if the actor has the awards required by filter */
+    public boolean checkAwards(final List<String> filterAwards) {
+        for (String award : filterAwards) {
+            if (!this.getAwards().containsKey(award)) {
                 return false;
             }
         }
@@ -90,7 +93,8 @@ public class Actor {
         return true;
     }
 
-    public boolean checkWords(List<String> words) {
+    /** Checks if the actor's career description contains the words required by filter */
+    public boolean checkWords(final List<String> words) {
         String lowerCareerDescription = this.getCareerDescription().toLowerCase();
         String[] wordsCareerDescription = lowerCareerDescription.split("\\W+");
 
@@ -107,15 +111,5 @@ public class Actor {
         }
 
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Actor{" +
-                "name='" + name + '\'' +
-                ", careerDescription='" + careerDescription + '\'' +
-                ", filmography=" + filmography +
-                ", awards=" + awards +
-                '}';
     }
 }

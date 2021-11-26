@@ -6,7 +6,8 @@ import common.Constants;
 import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
-import homework.*;
+
+import homework.Database;
 import org.json.simple.JSONArray;
 
 import java.io.File;
@@ -14,8 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -71,7 +70,6 @@ public final class Main {
         Input input = inputLoader.readData();
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
-        // arrayResult.add(fileWriter.writeFile(1,"","success -> Brexit: The Uncivil War was viewed with total views of 1"));
         //TODO add here the entry point to your implementation
 
         Database database = new Database(input);

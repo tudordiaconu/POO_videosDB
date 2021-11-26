@@ -7,20 +7,22 @@ import fileio.SerialInputData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Serial extends Video{
+public class Serial extends Video {
     private final int numberOfSeasons;
     private final ArrayList<Season> seasons;
 
-    public Serial(SerialInputData serialInputData) {
+    public Serial(final SerialInputData serialInputData) {
         super(serialInputData);
         this.numberOfSeasons = serialInputData.getNumberSeason();
         this.seasons = serialInputData.getSeasons();
     }
 
+    /** getter for the arraylist of seasons */
     public ArrayList<Season> getSeasons() {
         return seasons;
     }
 
+    /** calculates the total duration of a serial */
     public int calculateDuration() {
         int serialDuration = 0;
 
@@ -31,7 +33,9 @@ public class Serial extends Video{
         return serialDuration;
     }
 
-    public static List<Serial> filterSerialsByYear(Database database, ActionInputData actionInputData) {
+    /** filters the serials by year */
+    public static List<Serial> filterSerialsByYear(final Database database,
+                                                   final ActionInputData actionInputData) {
         int year;
         List<Serial> filteredSerialsByYear;
         if (actionInputData.getFilters().get(0).get(0) != null) {
@@ -47,8 +51,10 @@ public class Serial extends Video{
         return filteredSerialsByYear;
     }
 
-    public static List<Serial> filterSerialsByGenre(Database database, ActionInputData actionInputData,
-                                                    List<Serial> filteredByYear) {
+    /** filters the serials by genre*/
+    public static List<Serial> filterSerialsByGenre(final Database database,
+                                                    final ActionInputData actionInputData,
+                                                    final List<Serial> filteredByYear) {
         List<Serial> filteredSerialsByGenre;
 
         if (actionInputData.getFilters().get(1).get(0) != null) {
@@ -65,14 +71,15 @@ public class Serial extends Video{
         return filteredSerialsByGenre;
     }
 
+    /** calculates the total rating of a serial */
     @Override
-    public double getRating(){
+    public double getRating() {
         double ratingShow;
         double showSum = 0;
 
-        for(Season season : this.seasons) {
+        for (Season season : this.seasons) {
             double seasonSum = 0;
-            if(season.getRatings().size() != 0) {
+            if (season.getRatings().size() != 0) {
                 for (int i = 0; i < season.getRatings().size(); i++) {
                     seasonSum = seasonSum + season.getRatings().get(i);
                 }
@@ -83,16 +90,5 @@ public class Serial extends Video{
 
         ratingShow = showSum / this.numberOfSeasons;
         return ratingShow;
-    }
-
-    @Override
-    public String toString() {
-        return "Serial{" + " title= "
-                + super.getTitle() + " " + " year= "
-                + super.getYear() + " cast {"
-                + super.getCast() + " }\n" + " genres {"
-                + super.getGenres() + " }\n "
-                + " numberSeason= " + numberOfSeasons
-                + ", seasons=" + seasons + "\n\n" + '}';
     }
 }

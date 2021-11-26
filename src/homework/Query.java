@@ -2,13 +2,16 @@ package homework;
 
 import fileio.ActionInputData;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Query {
-    public static ArrayList<String> user(Database database, ActionInputData actionInputData) {
+public final class Query {
+    private Query() { }
+
+    /** function for the user query */
+    public static ArrayList<String> user(final Database database,
+                                         final ActionInputData actionInputData) {
         ArrayList<String> usernames = new ArrayList<>();
         List<User> users = database.getUserMap().values()
                 .stream()
@@ -43,7 +46,9 @@ public class Query {
         return usernames;
     }
 
-    public static ArrayList<String> actorsAverage (Database database, ActionInputData actionInputData) {
+    /** method which returns a list with actors sorted by average rating */
+    public static ArrayList<String> actorsAverage(final Database database,
+                                                  final ActionInputData actionInputData) {
         ArrayList<String> actorNames = new ArrayList<>();
         int n = actionInputData.getNumber();
 
@@ -53,25 +58,27 @@ public class Query {
                     actor1.getAverageRating(database);
                     actor2.getAverageRating(database);
 
-                    if (actor1.averageRating == actor2.averageRating) {
+                    if (actor1.getAverageRating(database) == actor2.getAverageRating(database)) {
                         return actor1.getName().compareTo(actor2.getName());
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
-                        return Double.compare(actor1.averageRating, actor2.averageRating);
+                        return Double.compare(actor1.getAverageRating(database),
+                                actor2.getAverageRating(database));
                     } else {
-                        return Double.compare(actor2.averageRating, actor1.averageRating);
+                        return Double.compare(actor2.getAverageRating(database),
+                                actor1.getAverageRating(database));
                     }
                 }).toList();
 
         for (Actor actor : actors) {
-            if (actor.averageRating > 0) {
+            if (actor.getAverageRating(database) > 0) {
                 actorNames.add(actor.getName());
             }
         }
 
         if (actorNames.size() > n) {
-            while(actorNames.size() != n) {
+            while (actorNames.size() != n) {
                 actorNames.remove(actorNames.size() - 1);
             }
         }
@@ -79,10 +86,12 @@ public class Query {
         return actorNames;
     }
 
-    public static ArrayList<String> actorsAwards (Database database, ActionInputData actionInputData) {
+    /** method which returns a list of actors sorted by the number of awards won */
+    public static ArrayList<String> actorsAwards(final Database database,
+                                                  final ActionInputData actionInputData) {
         ArrayList<String> actorNames = new ArrayList<>();
 
-        List<String> awards = new ArrayList<>(actionInputData.getFilters().get(3));
+        List<String> awards = new ArrayList<>(actionInputData.getFilters().get(2 + 1));
 
         List<Actor> actors = database.getActorMap().values().stream()
                 .filter(actor -> actor.checkAwards(awards)).toList();
@@ -113,9 +122,10 @@ public class Query {
         return actorNames;
     }
 
-
-
-    public static ArrayList<String> actorsFilterDescription(Database database, ActionInputData actionInputData) {
+    /** method which returns a list of actors filtered by words found in the
+     *  career description and sorted alphabetically*/
+    public static ArrayList<String> actorsFilterDescription(final Database database,
+                                                            final ActionInputData actionInputData) {
         ArrayList<String> actorNames = new ArrayList<>();
         List<String> words = new ArrayList<>(actionInputData.getFilters().get(2));
 
@@ -135,9 +145,12 @@ public class Query {
         return actorNames;
     }
 
-    public static ArrayList<String> moviesLongest(Database database, ActionInputData actionInputData) {
+    /** method which returns a list of movies sorted by length */
+    public static ArrayList<String> moviesLongest(final Database database,
+                                                  final ActionInputData actionInputData) {
         List<Movie> filteredMoviesListByYear = Movie.filterMoviesByYear(database, actionInputData);
-        List<Movie> filteredMovies = Movie.filterMoviesByGenre(database, actionInputData, filteredMoviesListByYear);
+        List<Movie> filteredMovies = Movie.filterMoviesByGenre(
+                database, actionInputData, filteredMoviesListByYear);
 
         List<Movie> sortedMovies = filteredMovies
                 .stream()
@@ -162,7 +175,7 @@ public class Query {
         int n = actionInputData.getNumber();
 
         if (moviesNames.size() > n) {
-            while(moviesNames.size() != n) {
+            while (moviesNames.size() != n) {
                 moviesNames.remove(moviesNames.size() - 1);
             }
         }
@@ -170,9 +183,13 @@ public class Query {
         return moviesNames;
     }
 
-    public static ArrayList<String> serialsLongest(Database database, ActionInputData actionInputData) {
-        List<Serial> filteredSerialsListByYear = Serial.filterSerialsByYear(database, actionInputData);
-        List<Serial> filteredSerials = Serial.filterSerialsByGenre(database, actionInputData, filteredSerialsListByYear);
+    /** method which returns list of serials sorted by duration */
+    public static ArrayList<String> serialsLongest(final Database database,
+                                                   final ActionInputData actionInputData) {
+        List<Serial> filteredSerialsListByYear = Serial.filterSerialsByYear(
+                database, actionInputData);
+        List<Serial> filteredSerials = Serial.filterSerialsByGenre(
+                    database, actionInputData, filteredSerialsListByYear);
 
         List<Serial> sortedSerials = filteredSerials
                 .stream()
@@ -197,12 +214,11 @@ public class Query {
         int n = actionInputData.getNumber();
 
         if (serialsNames.size() > n) {
-            while(serialsNames.size() != n) {
+            while (serialsNames.size() != n) {
                 serialsNames.remove(serialsNames.size() - 1);
             }
         }
 
         return serialsNames;
     }
-
 }

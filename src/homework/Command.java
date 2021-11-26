@@ -3,8 +3,11 @@ package homework;
 import entertainment.Season;
 import fileio.ActionInputData;
 
-public class Command {
-    public static void view(String username, String title, Database database) {
+public final class Command {
+    private Command() { }
+
+    /** Function which does the view command */
+    public static void view(final String username, final String title, final Database database) {
         User user = database.getUserMap().get(username);
         if (user.getHistory().containsKey(title)) {
             user.getHistory().put(title, user.getHistory().get(title) + 1);
@@ -13,7 +16,9 @@ public class Command {
         }
     }
 
-    public static int favorite(String username, String title, Database database) {
+    /** Function which does the favorite command */
+    public static int favorite(final String username, final String title,
+                               final Database database) {
         int alreadyExists = 0;
 
         User user = database.getUserMap().get(username);
@@ -30,7 +35,9 @@ public class Command {
         return alreadyExists;
     }
 
-    public static int rating(String username, String title, Database database, ActionInputData actionInputData) {
+    /** Function which does the rating command */
+    public static int rating(final String username, final String title, final Database database,
+                             final ActionInputData actionInputData) {
         User user = database.getUserMap().get(username);
         int found = 0;
 
