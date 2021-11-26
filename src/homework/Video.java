@@ -19,7 +19,7 @@ public abstract class Video {
         this.ratings = new ArrayList<>();
     }
 
-    public abstract  double getRating();
+    public abstract double getRating();
 
     public String getTitle() {
         return title;

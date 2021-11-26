@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Serial extends Video{
     private final int numberOfSeasons;
     private final ArrayList<Season> seasons;
+
     public Serial(SerialInputData serialInputData) {
         super(serialInputData);
         this.numberOfSeasons = serialInputData.getNumberSeason();
@@ -29,11 +30,13 @@ public class Serial extends Video{
 
         for(Season season : this.seasons) {
             double seasonSum = 0;
-            for(int i = 0; i < season.getRatings().size(); i++) {
-                seasonSum = seasonSum + season.getRatings().get(i);
+            if(season.getRatings().size() != 0) {
+                for (int i = 0; i < season.getRatings().size(); i++) {
+                    seasonSum = seasonSum + season.getRatings().get(i);
+                }
+                double seasonRating = seasonSum / season.getRatings().size();
+                showSum = showSum + seasonRating;
             }
-            double seasonRating = seasonSum / season.getRatings().size();
-            showSum = showSum + seasonRating;
         }
 
         ratingShow = showSum / this.numberOfSeasons;

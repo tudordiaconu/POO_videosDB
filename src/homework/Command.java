@@ -37,20 +37,27 @@ public class Command {
         if (database.getMovieMap().containsKey(title)) {
             if (user.getHistory().containsKey(title)) {
                 Movie movie = database.getMovieMap().get(title);
-                movie.getRatings().add(actionInputData.getGrade());
-                user.getMoviesGivenRatings().put(title, actionInputData.getGrade());
-                user.setNrGivenRatings(user.getNrGivenRatings() + 1);
-                found = 1;
+                if (!user.getMoviesGivenRatings().containsKey(title)) {
+                    movie.getRatings().add(actionInputData.getGrade());
+                    user.getMoviesGivenRatings().put(title, actionInputData.getGrade());
+                    user.setNrGivenRatings(user.getNrGivenRatings() + 1);
+                    found = 1;
+                } else {
+                    found = 2;
+                }
             }
         } else if (database.getSerialMap().containsKey(title)) {
             if (user.getHistory().containsKey(title)) {
                 Serial serial = database.getSerialMap().get(title);
                 Season season = serial.getSeasons().get(actionInputData.getSeasonNumber() - 1);
-                //serial.getRatings().add(actionInputData.getGrade());
-                season.getRatings().add(actionInputData.getGrade());
-                user.getSeasonsGivenRatings().put(season, actionInputData.getGrade());
-                user.setNrGivenRatings(user.getNrGivenRatings() + 1);
-                found = 1;
+                if (!user.getSeasonsGivenRatings().containsKey(season)) {
+                    season.getRatings().add(actionInputData.getGrade());
+                    user.getSeasonsGivenRatings().put(season, actionInputData.getGrade());
+                    user.setNrGivenRatings(user.getNrGivenRatings() + 1);
+                    found = 1;
+                } else {
+                    found = 2;
+                }
             }
         }
 

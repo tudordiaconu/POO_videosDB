@@ -89,9 +89,12 @@ public class Database {
                         arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> " +
                                 actionInputData.getTitle() + " was rated with " + actionInputData.getGrade() +
                                 " by " + actionInputData.getUsername()));
-                    } else {
+                    } else if (found == 0){
                         arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
                                 actionInputData.getTitle() + " is not seen"));
+                    } else {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "error -> " +
+                                actionInputData.getTitle() + " has been already rated"));
                     }
                 }
             }
@@ -100,6 +103,22 @@ public class Database {
                 if(actionInputData.getObjectType().equals("users")) {
                     ArrayList<String> sortedUsers = Query.user(this, actionInputData);
                     arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedUsers));
+                }
+
+                if(actionInputData.getObjectType().equals("actors")) {
+                    if (actionInputData.getCriteria().equals("awards")) {
+                        ArrayList<String> sortedActors = Query.actorsAwards(this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedActors));
+                    }
+
+                    if (actionInputData.getCriteria().equals("average")) {
+                        ArrayList<String> sortedActors = Query.actorsAverage(this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedActors));
+                    }
+
+                    if (actionInputData.getCriteria().equals("filter_description")) {
+
+                    }
                 }
             }
         }
