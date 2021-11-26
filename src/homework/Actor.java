@@ -3,24 +3,26 @@ package homework;
 import actor.ActorsAwards;
 import fileio.ActorInputData;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 public class Actor {
     private String name;
-    private String careerDescription;
+    private final String careerDescription;
     private ArrayList<String> filmography;
 
-    private Map<ActorsAwards, Integer> awards;
+    private Map<String, Integer> awards;
     public double averageRating;
 
     public Actor(ActorInputData actorInputData) {
         this.name = actorInputData.getName();
         this.careerDescription = actorInputData.getCareerDescription();
         this.filmography = actorInputData.getFilmography();
-        this.awards = actorInputData.getAwards();
+        this.awards = new HashMap<>();
+        for (Map.Entry<ActorsAwards, Integer> actorsAwards : actorInputData.getAwards().entrySet()) {
+            String award = actorsAwards.getKey().toString();
+            this.awards.put(award, actorsAwards.getValue());
+        }
     }
 
     public void getAverageRating(Database database) {
@@ -66,10 +68,6 @@ public class Actor {
         return careerDescription;
     }
 
-    public void setCareerDescription(String careerDescription) {
-        this.careerDescription = careerDescription;
-    }
-
     public ArrayList<String> getFilmography() {
         return filmography;
     }
@@ -78,17 +76,32 @@ public class Actor {
         this.filmography = filmography;
     }
 
-    public Map<ActorsAwards, Integer> getAwards() {
+    public Map<String, Integer> getAwards() {
         return awards;
-    }
-
-    public void setAwards(Map<ActorsAwards, Integer> awards) {
-        this.awards = awards;
     }
 
     public boolean checkAwards(List<String> awards) {
         for (String award : awards) {
             if(!this.getAwards().containsKey(award)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkWords(List<String> words) {
+        String lowerCareerDescription = this.getCareerDescription().toLowerCase();
+        String[] wordsCareerDescription = lowerCareerDescription.split("\\W+");
+
+        Map<String, Integer> mapOfWords = new HashMap<>();
+
+        for (String word : wordsCareerDescription) {
+            mapOfWords.put(word, 0);
+        }
+
+        for (String word : words) {
+            if (!mapOfWords.containsKey(word)) {
                 return false;
             }
         }

@@ -117,7 +117,22 @@ public class Database {
                     }
 
                     if (actionInputData.getCriteria().equals("filter_description")) {
+                        ArrayList<String> sortedActors = Query.actorsFilterDescription(this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedActors));
+                    }
+                }
 
+                if(actionInputData.getObjectType().equals("movies")) {
+                    if (actionInputData.getCriteria().equals("longest")) {
+                        ArrayList<String> sortedMovies = Query.moviesLongest(this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedMovies));
+                    }
+                }
+
+                if(actionInputData.getObjectType().equals("shows")) {
+                    if (actionInputData.getCriteria().equals("longest")) {
+                        ArrayList<String> sortedSerials = Query.serialsLongest(this, actionInputData);
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "Query result: " + sortedSerials));
                     }
                 }
             }

@@ -1,9 +1,11 @@
 package homework;
 
 import entertainment.Season;
+import fileio.ActionInputData;
 import fileio.SerialInputData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Serial extends Video{
     private final int numberOfSeasons;
@@ -15,12 +17,52 @@ public class Serial extends Video{
         this.seasons = serialInputData.getSeasons();
     }
 
-    public int getNumberOfSeasons() {
-        return numberOfSeasons;
-    }
-
     public ArrayList<Season> getSeasons() {
         return seasons;
+    }
+
+    public int calculateDuration() {
+        int serialDuration = 0;
+
+        for (Season season : this.seasons) {
+            serialDuration += season.getDuration();
+        }
+
+        return serialDuration;
+    }
+
+    public static List<Serial> filterSerialsByYear(Database database, ActionInputData actionInputData) {
+        int year;
+        List<Serial> filteredSerialsByYear;
+        if (actionInputData.getFilters().get(0).get(0) != null) {
+            year = Integer.parseInt(actionInputData.getFilters().get(0).get(0));
+            filteredSerialsByYear = database.getSerialMap().values()
+                    .stream()
+                    .filter(serial -> serial.checkYear(year))
+                    .toList();
+        } else {
+            filteredSerialsByYear = database.getSerialMap().values().stream().toList();
+        }
+
+        return filteredSerialsByYear;
+    }
+
+    public static List<Serial> filterSerialsByGenre(Database database, ActionInputData actionInputData,
+                                                    List<Serial> filteredByYear) {
+        List<Serial> filteredSerialsByGenre;
+
+        if (actionInputData.getFilters().get(1).get(0) != null) {
+            List<String> genres = new ArrayList<>(actionInputData.getFilters().get(1));
+
+            filteredSerialsByGenre = filteredByYear
+                    .stream()
+                    .filter(serial -> serial.checkGenres(genres))
+                    .toList();
+        } else {
+            filteredSerialsByGenre = database.getSerialMap().values().stream().toList();
+        }
+
+        return filteredSerialsByGenre;
     }
 
     @Override

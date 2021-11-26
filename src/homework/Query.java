@@ -4,6 +4,7 @@ import fileio.ActionInputData;
 
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Query {
@@ -81,10 +82,7 @@ public class Query {
     public static ArrayList<String> actorsAwards (Database database, ActionInputData actionInputData) {
         ArrayList<String> actorNames = new ArrayList<>();
 
-        List<String> awards = new ArrayList<>();
-        for (String award : actionInputData.getFilters().get(3)) {
-            awards.add(award);
-        }
+        List<String> awards = new ArrayList<>(actionInputData.getFilters().get(3));
 
         List<Actor> actors = database.getActorMap().values().stream()
                 .filter(actor -> actor.checkAwards(awards)).toList();
@@ -106,7 +104,7 @@ public class Query {
                     }
                 }).toList();
 
-        for (Actor actor : actors) {
+        for (Actor actor : sortedActors) {
             if (actor.getNumberAwards() > 0) {
                 actorNames.add(actor.getName());
             }
@@ -117,8 +115,94 @@ public class Query {
 
 
 
-    public static void actorsFilterDescription(Database database, ActionInputData actionInputData) {
+    public static ArrayList<String> actorsFilterDescription(Database database, ActionInputData actionInputData) {
+        ArrayList<String> actorNames = new ArrayList<>();
+        List<String> words = new ArrayList<>(actionInputData.getFilters().get(2));
 
+        List<Actor> actors = database.getActorMap().values()
+                .stream()
+                .filter(actor -> actor.checkWords(words))
+                .toList();
+
+        List<Actor> sortedActors = actors
+                .stream()
+                .sorted(Comparator.comparing(Actor::getName)).toList();
+
+        for (Actor actor : sortedActors) {
+            actorNames.add(actor.getName());
+        }
+
+        return actorNames;
+    }
+
+    public static ArrayList<String> moviesLongest(Database database, ActionInputData actionInputData) {
+        List<Movie> filteredMoviesListByYear = Movie.filterMoviesByYear(database, actionInputData);
+        List<Movie> filteredMovies = Movie.filterMoviesByGenre(database, actionInputData, filteredMoviesListByYear);
+
+        List<Movie> sortedMovies = filteredMovies
+                .stream()
+                .sorted((movie1, movie2) -> {
+                    if (movie1.getDuration() == movie2.getDuration()) {
+                        return movie1.getTitle().compareTo(movie2.getTitle());
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return movie1.getDuration() - movie2.getDuration();
+                    } else {
+                        return movie2.getDuration() - movie1.getDuration();
+                    }
+                }).toList();
+
+        ArrayList<String> moviesNames = new ArrayList<>();
+
+        for (Movie movie : sortedMovies) {
+            moviesNames.add(movie.getTitle());
+        }
+
+        int n = actionInputData.getNumber();
+
+        if (moviesNames.size() > n) {
+            while(moviesNames.size() != n) {
+                moviesNames.remove(moviesNames.size() - 1);
+            }
+        }
+
+        return moviesNames;
+    }
+
+    public static ArrayList<String> serialsLongest(Database database, ActionInputData actionInputData) {
+        List<Serial> filteredSerialsListByYear = Serial.filterSerialsByYear(database, actionInputData);
+        List<Serial> filteredSerials = Serial.filterSerialsByGenre(database, actionInputData, filteredSerialsListByYear);
+
+        List<Serial> sortedSerials = filteredSerials
+                .stream()
+                .sorted((serial1, serial2) -> {
+                    if (serial1.calculateDuration() == serial2.calculateDuration()) {
+                        return serial1.getTitle().compareTo(serial2.getTitle());
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return serial1.calculateDuration() - serial2.calculateDuration();
+                    } else {
+                        return serial2.calculateDuration() - serial1.calculateDuration();
+                    }
+                }).toList();
+
+        ArrayList<String> serialsNames = new ArrayList<>();
+
+        for (Serial serial : sortedSerials) {
+            serialsNames.add(serial.getTitle());
+        }
+
+        int n = actionInputData.getNumber();
+
+        if (serialsNames.size() > n) {
+            while(serialsNames.size() != n) {
+                serialsNames.remove(serialsNames.size() - 1);
+            }
+        }
+
+        return serialsNames;
     }
 
 }

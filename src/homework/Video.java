@@ -3,6 +3,9 @@ package homework;
 import fileio.ShowInput;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Video {
     private final String title;
@@ -17,6 +20,26 @@ public abstract class Video {
         this.cast = showInput.getCast();
         this.genres = showInput.getGenres();
         this.ratings = new ArrayList<>();
+    }
+
+    public boolean checkYear(int year) {
+        return this.getYear() == year;
+    }
+
+    public boolean checkGenres(List<String> genres) {
+        Map<String, Integer> mapOfGenres = new HashMap<>();
+
+        for (String genre : this.getGenres()) {
+            mapOfGenres.put(genre, 0);
+        }
+
+        for (String genre : genres) {
+            if (!mapOfGenres.containsKey(genre)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public abstract double getRating();
