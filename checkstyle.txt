@@ -1,2 +1,11 @@
 Starting audit...
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:5:8: Unused import - javax.xml.crypto.Data. [UnusedImports]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:311:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:351:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:392:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:430:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:39:5: Class 'Video' looks like designed for extension (can be subclassed), but the method 'getNumberOfViews' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Video' final or making the method 'getNumberOfViews' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:39:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:42:25: 'title' hides a field. [HiddenField]
 Audit done.
+Checkstyle ends with 8 errors.

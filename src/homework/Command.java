@@ -27,6 +27,13 @@ public final class Command {
             if (!user.getFavoriteMovies().contains(title)) {
                 user.getFavoriteMovies().add(title);
                 alreadyExists = 1;
+//                if (database.getMovieMap().containsKey(title)) {
+//                    Movie movie = database.getMovieMap().get(title);
+//                    movie.setNumberOfFavoured(movie.getNumberOfFavoured() + 1);
+//                } else if (database.getSerialMap().containsKey(title)) {
+//                    Serial serial = database.getSerialMap().get(title);
+//                    serial.setNumberOfFavoured(serial.getNumberOfFavoured() + 1);
+//                }
             } else {
                 alreadyExists = 2;
             }

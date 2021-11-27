@@ -146,21 +146,55 @@ public class Database {
                 }
 
                 if (actionInputData.getObjectType().equals("movies")) {
+                    ArrayList<String> sortedMovies = new ArrayList<>();
                     if (actionInputData.getCriteria().equals("longest")) {
-                        ArrayList<String> sortedMovies = Query.moviesLongest(
+                        sortedMovies = Query.moviesLongest(
                                 this, actionInputData);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
-                                "Query result: " + sortedMovies));
                     }
+
+                    if (actionInputData.getCriteria().equals("favorite")) {
+                        sortedMovies = Query.moviesFavorites(
+                                this, actionInputData);
+                    }
+
+                    if (actionInputData.getCriteria().equals("most_viewed")) {
+                        sortedMovies = Query.moviesNumberViews(
+                                this, actionInputData);
+                    }
+
+                    if (actionInputData.getCriteria().equals("ratings")) {
+                        sortedMovies = Query.moviesRatings(
+                                this, actionInputData);
+                    }
+
+                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                            "Query result: " + sortedMovies));
                 }
 
                 if (actionInputData.getObjectType().equals("shows")) {
+                    ArrayList<String> sortedSerials = new ArrayList<>();
                     if (actionInputData.getCriteria().equals("longest")) {
-                        ArrayList<String> sortedSerials = Query.serialsLongest(
+                        sortedSerials = Query.serialsLongest(
                                 this, actionInputData);
-                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
-                    "Query result: " + sortedSerials));
                     }
+
+                    if (actionInputData.getCriteria().equals("favorite")) {
+                        sortedSerials = Query.serialsFavorites(
+                                this, actionInputData);
+                    }
+
+                    if (actionInputData.getCriteria().equals("most_viewed")) {
+                        sortedSerials = Query.serialsNumberViews(
+                                this, actionInputData);
+                    }
+
+                    if (actionInputData.getCriteria().equals("ratings")) {
+                        sortedSerials = Query.serialsRatings(
+                                this, actionInputData);
+                    }
+
+                    arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                            "Query result: " + sortedSerials));
                 }
             }
         }

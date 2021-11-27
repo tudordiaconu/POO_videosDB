@@ -22,6 +22,33 @@ public abstract class Video {
         this.ratings = new ArrayList<>();
     }
 
+    /** returns the number of times a video is found in the users' favourites list */
+    public int getNumberOfFavored(final Database database) {
+        int number = 0;
+        for (User user : database.getUserMap().values()) {
+            for (String favoriteTitle : user.getFavoriteMovies()) {
+                if (this.title.equals(favoriteTitle)) {
+                    number++;
+                }
+            }
+        }
+
+        return number;
+    }
+
+    public int getNumberOfViews(final Database database) {
+        int number = 0;
+        for (User user : database.getUserMap().values()) {
+            for (String title : user.getHistory().keySet()) {
+                if (this.title.equals(title)) {
+                    number += user.getHistory().get(title);
+                }
+            }
+        }
+
+        return number;
+    }
+
     /** checks if the video's year is the one required in the filter */
     public boolean checkYear(final int filterYear) {
         return this.getYear() == filterYear;
