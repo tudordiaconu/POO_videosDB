@@ -197,6 +197,68 @@ public class Database {
                             "Query result: " + sortedSerials));
                 }
             }
+
+            if(actionInputData.getActionType().equals("recommendation")) {
+                if (actionInputData.getType().equals("standard")) {
+                    String videoName = Recommendation.standard(this,
+                            actionInputData.getUsername(), this.input);
+                    if (!videoName.equals("")) {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "StandardRecommendation result: " + videoName));
+                    } else {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "StandardRecommendation cannot be applied!"));
+                    }
+                }
+
+                if (actionInputData.getType().equals("best_unseen")) {
+                    String videoName = Recommendation.bestUnseen(this,
+                            actionInputData.getUsername(), this.input);
+                    if (!videoName.equals("")) {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "BestRatedUnseenRecommendation result: " + videoName));
+                    } else {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "BestRatedUnseenRecommendation cannot be applied!"));
+                    }
+                }
+
+                if (actionInputData.getType().equals("favorite")) {
+                    if (this.getUserMap().get(actionInputData.getUsername())
+                            .getSubscriptionType().equals("PREMIUM")) {
+                        String videoName = Recommendation.favoriteRecommendation(this,
+                                actionInputData.getUsername(), this.input);
+                        if (!videoName.equals("")) {
+                            arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                    "FavoriteRecommendation result: " + videoName));
+                        } else {
+                            arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                    "FavoriteRecommendation cannot be applied!"));
+                        }
+                    } else {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "FavoriteRecommendation cannot be applied!"));
+                    }
+                }
+
+                if (actionInputData.getType().equals("search")) {
+                    if (this.getUserMap().get(actionInputData.getUsername())
+                            .getSubscriptionType().equals("PREMIUM")) {
+                            ArrayList<String> sortedVideos = Recommendation.searchRecommendation(
+                                    this, actionInputData.getUsername(), actionInputData);
+                            if (sortedVideos.size() > 0) {
+                                arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                        "SearchRecommendation result: " + sortedVideos));
+                            } else {
+                                arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                        "SearchRecommendation cannot be applied!"));
+                            }
+                    } else {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "SearchRecommendation cannot be applied!"));
+                    }
+                }
+            }
         }
     }
 

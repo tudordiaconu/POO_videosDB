@@ -21,7 +21,11 @@ public final class Query {
                     int secondNumberRatings = user2.getNrGivenRatings();
 
                     if (firstNumberRatings == secondNumberRatings) {
-                        return user1.getUsername().compareTo(user2.getUsername());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return user1.getUsername().compareTo(user2.getUsername());
+                        } else {
+                            return user2.getUsername().compareTo(user1.getUsername());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -60,7 +64,11 @@ public final class Query {
                     actor2.getAverageRating(database);
 
                     if (actor1.getAverageRating(database) == actor2.getAverageRating(database)) {
-                        return actor1.getName().compareTo(actor2.getName());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return actor1.getName().compareTo(actor2.getName());
+                        } else {
+                            return actor2.getName().compareTo(actor1.getName());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -103,7 +111,11 @@ public final class Query {
                     int secondNumberAwards = actor2.getNumberAwards();
 
                     if (firstNumberAwards == secondNumberAwards) {
-                        return actor1.getName().compareTo(actor2.getName());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return actor1.getName().compareTo(actor2.getName());
+                        } else {
+                            return actor2.getName().compareTo(actor1.getName());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -156,7 +168,11 @@ public final class Query {
                 .stream()
                 .sorted((movie1, movie2) -> {
                     if (movie1.getDuration() == movie2.getDuration()) {
-                        return movie1.getTitle().compareTo(movie2.getTitle());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return movie1.getTitle().compareTo(movie2.getTitle());
+                        } else {
+                            return movie2.getTitle().compareTo(movie1.getTitle());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -195,7 +211,11 @@ public final class Query {
                 .stream()
                 .sorted((serial1, serial2) -> {
                     if (serial1.calculateDuration() == serial2.calculateDuration()) {
-                        return serial1.getTitle().compareTo(serial2.getTitle());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return serial1.getTitle().compareTo(serial2.getTitle());
+                        } else {
+                            return serial2.getTitle().compareTo(serial1.getTitle());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -235,7 +255,11 @@ public final class Query {
                 .sorted((movie1, movie2) -> {
                     if (movie1.getNumberOfFavored(database)
                             == movie2.getNumberOfFavored(database)) {
-                        return movie1.getTitle().compareTo(movie2.getTitle());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return movie1.getTitle().compareTo(movie2.getTitle());
+                        } else {
+                            return movie2.getTitle().compareTo(movie1.getTitle());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -278,7 +302,11 @@ public final class Query {
                 .sorted((serial1, serial2) -> {
                     if (serial1.getNumberOfFavored(database)
                             == serial2.getNumberOfFavored(database)) {
-                        return serial1.getTitle().compareTo(serial2.getTitle());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return serial1.getTitle().compareTo(serial2.getTitle());
+                        } else {
+                            return serial2.getTitle().compareTo(serial1.getTitle());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -318,7 +346,11 @@ public final class Query {
         List<Movie> sortedMovies = filteredMovies.stream()
                 .sorted((movie1, movie2) -> {
                     if (movie1.getNumberOfViews(database) == movie2.getNumberOfViews(database)) {
-                        return movie1.getTitle().compareTo(movie2.getTitle());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return movie1.getTitle().compareTo(movie2.getTitle());
+                        } else {
+                            return movie2.getTitle().compareTo(movie1.getTitle());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -359,7 +391,11 @@ public final class Query {
                 .sorted((serial1, serial2) -> {
                     if (serial1.getNumberOfViews(database)
                             == serial2.getNumberOfViews(database)) {
-                        return serial1.getTitle().compareTo(serial2.getTitle());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return serial1.getTitle().compareTo(serial2.getTitle());
+                        } else {
+                            return serial2.getTitle().compareTo(serial1.getTitle());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -399,7 +435,11 @@ public final class Query {
         List<Movie> sortedMovies = filteredMovies.stream()
                 .sorted((movie1, movie2) -> {
                     if (movie1.getRating() == movie2.getRating()) {
-                        return movie1.getTitle().compareTo(movie2.getTitle());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return movie1.getTitle().compareTo(movie2.getTitle());
+                        } else {
+                            return movie2.getTitle().compareTo(movie1.getTitle());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {
@@ -437,7 +477,11 @@ public final class Query {
         List<Serial> sortedSerials = filteredSerials.stream()
                 .sorted((serial1, serial2) -> {
                     if (serial1.getRating() == serial2.getRating()) {
-                        return serial1.getTitle().compareTo(serial2.getTitle());
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return serial1.getTitle().compareTo(serial2.getTitle());
+                        } else {
+                            return serial2.getTitle().compareTo(serial1.getTitle());
+                        }
                     }
 
                     if (actionInputData.getSortType().equals("asc")) {

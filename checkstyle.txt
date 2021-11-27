@@ -1,11 +1,23 @@
 Starting audit...
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Database.java:66:5: Method length is 197 lines (max allowed is 150). [MethodLength]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Database.java:201:13: 'if' is not followed by whitespace. [WhitespaceAround]
 [ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:5:8: Unused import - javax.xml.crypto.Data. [UnusedImports]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:311:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:351:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:392:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:430:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:339:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:383:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:428:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:470:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Recommendation.java:8:8: Unused import - javax.sql.rowset.serial.SQLInputImpl. [UnusedImports]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Recommendation.java:11:8: Unused import - java.util.stream.Collectors. [UnusedImports]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Recommendation.java:17:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Recommendation.java:36:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Recommendation.java:63:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Recommendation.java:95: Line is longer than 100 characters (found 104). [LineLength]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Recommendation.java:95:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:39:5: Class 'Video' looks like designed for extension (can be subclassed), but the method 'getNumberOfViews' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Video' final or making the method 'getNumberOfViews' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 [ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:39:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:42:25: 'title' hides a field. [HiddenField]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:57:5: Class 'Video' looks like designed for extension (can be subclassed), but the method 'checkGenre' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Video' final or making the method 'checkGenre' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:57:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:57:31: '(' is preceded with whitespace. [MethodParamPad]
 Audit done.
-Checkstyle ends with 8 errors.
+Checkstyle ends with 20 errors.

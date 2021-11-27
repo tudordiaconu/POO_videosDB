@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Movie extends Video {
     private final int duration;
+
     public Movie(final MovieInputData movieInputData) {
         super(movieInputData);
         this.duration = movieInputData.getDuration();
@@ -45,7 +46,7 @@ public class Movie extends Video {
                     .filter(movie -> movie.checkGenres(genres))
                     .toList();
         } else {
-            filteredMoviesByGenre = database.getMovieMap().values().stream().toList();
+            filteredMoviesByGenre = filteredByYear;
         }
 
         return filteredMoviesByGenre;
@@ -56,12 +57,15 @@ public class Movie extends Video {
     public double getRating() {
         double rating;
         double movieSum = 0;
-        int numberofRatings = this.getRatings().size();
-        for (int i = 0; i < numberofRatings; i++) {
+        int numberOfRatings = this.getRatings().size();
+        for (int i = 0; i < numberOfRatings; i++) {
             movieSum = movieSum + this.getRatings().get(i);
         }
-
-        rating = movieSum / numberofRatings;
+        if (numberOfRatings != 0) {
+            rating = movieSum / numberOfRatings;
+        } else {
+            rating = 0;
+        }
         return rating;
     }
 

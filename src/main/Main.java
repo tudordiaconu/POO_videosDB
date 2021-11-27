@@ -75,7 +75,6 @@ public final class Main {
         Database database = new Database(input);
         database.command(fileWriter, arrayResult);
 
-
         fileWriter.closeJSON(arrayResult);
     }
 }

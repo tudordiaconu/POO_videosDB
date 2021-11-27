@@ -79,13 +79,19 @@ public class Serial extends Video {
 
         for (Season season : this.seasons) {
             double seasonSum = 0;
-            if (season.getRatings().size() != 0) {
-                for (int i = 0; i < season.getRatings().size(); i++) {
-                    seasonSum = seasonSum + season.getRatings().get(i);
-                }
-                double seasonRating = seasonSum / season.getRatings().size();
-                showSum = showSum + seasonRating;
+            double seasonRating;
+            int numberOfRatings = season.getRatings().size();
+            for (int i = 0; i < season.getRatings().size(); i++) {
+                seasonSum = seasonSum + season.getRatings().get(i);
             }
+
+            if (numberOfRatings != 0) {
+                seasonRating = seasonSum / numberOfRatings;
+            } else {
+                seasonRating = 0;
+            }
+
+            showSum = showSum + seasonRating;
         }
 
         ratingShow = showSum / this.numberOfSeasons;

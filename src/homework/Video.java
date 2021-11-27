@@ -54,6 +54,16 @@ public abstract class Video {
         return this.getYear() == filterYear;
     }
 
+    public boolean checkGenre (final String filterGenre) {
+        Map<String, Integer>  mapOfGenres = new HashMap<>();
+
+        for (String genre : this.getGenres()) {
+            mapOfGenres.put(genre, 0);
+        }
+
+        return mapOfGenres.containsKey(filterGenre);
+    }
+
     /** checks if the video's genres are the one required in the filter */
     public boolean checkGenres(final List<String> filterGenres) {
         Map<String, Integer> mapOfGenres = new HashMap<>();
