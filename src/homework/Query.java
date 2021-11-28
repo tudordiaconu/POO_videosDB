@@ -148,7 +148,13 @@ public final class Query {
 
         List<Actor> sortedActors = actors
                 .stream()
-                .sorted(Comparator.comparing(Actor::getName)).toList();
+                .sorted((actor1, actor2) -> {
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return actor1.getName().compareTo(actor2.getName());
+                    } else {
+                        return actor2.getName().compareTo(actor1.getName());
+                    }
+                }).toList();
 
         for (Actor actor : sortedActors) {
             actorNames.add(actor.getName());

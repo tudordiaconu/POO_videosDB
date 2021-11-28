@@ -15,12 +15,22 @@ import fileio.UserInputData;
 
 
 public class Database {
-    private Map<String, Actor> actorMap;
-    private Map<String, Movie> movieMap;
-    private Map<String, Serial> serialMap;
-    private Map<String, User> userMap;
+    private final Map<String, Actor> actorMap;
+    private final Map<String, Movie> movieMap;
+    private final Map<String, Serial> serialMap;
+    private final Map<String, User> userMap;
 
     private final Input input;
+
+    private final Map<String, Integer> genresMap;
+
+    public Input getInput() {
+        return input;
+    }
+
+    public Map<String, Integer> getGenresMap() {
+        return genresMap;
+    }
 
     private void addActorsToDatabase() {
         for (ActorInputData actorInputData : input.getActors()) {
@@ -50,16 +60,30 @@ public class Database {
         }
     }
 
+    private void addGenresToDatabase() {
+        for (Movie movie : movieMap.values()) {
+            for (String genre : movie.getGenres()) {
+                if (!genresMap.containsKey(genre)) {
+                    genresMap.put(genre, movie.getNumberOfViews(this));
+                } else {
+                    genresMap.put(genre, genresMap.get(genre) + movie.getNumberOfViews(this));
+                }
+            }
+        }
+    }
+
     public Database(final Input input) {
         this.actorMap = new HashMap<>();
         this.movieMap = new HashMap<>();
         this.serialMap = new HashMap<>();
         this.userMap = new HashMap<>();
+        this.genresMap = new HashMap<>();
         this.input = input;
         this.addActorsToDatabase();
         this.addMoviesToDatabase();
         this.addSerialsToDatabase();
         this.addUsersToDatabase();
+        this.addGenresToDatabase();
     }
 
     /** method which does the commands given to the input */
@@ -256,6 +280,24 @@ public class Database {
                     } else {
                         arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
                                 "SearchRecommendation cannot be applied!"));
+                    }
+                }
+
+                if (actionInputData.getType().equals("popular")) {
+                    if (this.getUserMap().get(actionInputData.getUsername())
+                            .getSubscriptionType().equals("PREMIUM")) {
+                        String videoName = Recommendation.popularRecommendation(this,
+                                actionInputData.getUsername(), this.input);
+                        if (!videoName.equals("")) {
+                            arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                    "PopularRecommendation result: " + videoName));
+                        } else {
+                            arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                    "PopularRecommendation cannot be applied!"));
+                        }
+                    } else {
+                        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "",
+                                "PopularRecommendation cannot be applied!"));
                     }
                 }
             }

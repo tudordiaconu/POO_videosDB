@@ -14,6 +14,28 @@ public final class Command {
         } else {
             user.getHistory().put(title, 1);
         }
+
+        if (database.getMovieMap().containsKey(title)) {
+            Movie movie = database.getMovieMap().get(title);
+            for (String genre : movie.getGenres()) {
+                if (!database.getGenresMap().containsKey(genre)) {
+                    database.getGenresMap().put(genre, movie.getNumberOfViews(database));
+                } else {
+                    database.getGenresMap().put(genre, database.getGenresMap().get(genre)
+                            + 1);
+                }
+            }
+        } else if (database.getSerialMap().containsKey(title)) {
+            Serial serial = database.getSerialMap().get(title);
+            for (String genre : serial.getGenres()) {
+                if (!database.getGenresMap().containsKey(genre)) {
+                    database.getGenresMap().put(genre, serial.getNumberOfViews(database));
+                } else {
+                    database.getGenresMap().put(genre, database.getGenresMap().get(genre)
+                            + 1);
+                }
+            }
+        }
     }
 
     /** Function which does the favorite command */
@@ -27,13 +49,6 @@ public final class Command {
             if (!user.getFavoriteMovies().contains(title)) {
                 user.getFavoriteMovies().add(title);
                 alreadyExists = 1;
-//                if (database.getMovieMap().containsKey(title)) {
-//                    Movie movie = database.getMovieMap().get(title);
-//                    movie.setNumberOfFavoured(movie.getNumberOfFavoured() + 1);
-//                } else if (database.getSerialMap().containsKey(title)) {
-//                    Serial serial = database.getSerialMap().get(title);
-//                    serial.setNumberOfFavoured(serial.getNumberOfFavoured() + 1);
-//                }
             } else {
                 alreadyExists = 2;
             }

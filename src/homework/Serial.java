@@ -71,6 +71,13 @@ public class Serial extends Video {
         return filteredSerialsByGenre;
     }
 
+    @Override
+    public double getRatingFromDatabase(Database database) {
+        Serial auxSerial = database.getSerialMap().get(this.getTitle());
+
+        return auxSerial.getRating();
+    }
+
     /** calculates the total rating of a serial */
     @Override
     public double getRating() {

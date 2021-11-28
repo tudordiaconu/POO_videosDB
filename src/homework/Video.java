@@ -36,12 +36,13 @@ public abstract class Video {
         return number;
     }
 
+    /** method that returns number of total views of a video */
     public int getNumberOfViews(final Database database) {
         int number = 0;
         for (User user : database.getUserMap().values()) {
-            for (String title : user.getHistory().keySet()) {
-                if (this.title.equals(title)) {
-                    number += user.getHistory().get(title);
+            for (String titleInHistory : user.getHistory().keySet()) {
+                if (this.title.equals(titleInHistory)) {
+                    number += user.getHistory().get(titleInHistory);
                 }
             }
         }
@@ -54,7 +55,8 @@ public abstract class Video {
         return this.getYear() == filterYear;
     }
 
-    public boolean checkGenre (final String filterGenre) {
+    /** checks if the video contains the required genre among its genres */
+    public boolean checkGenre(final String filterGenre) {
         Map<String, Integer>  mapOfGenres = new HashMap<>();
 
         for (String genre : this.getGenres()) {
@@ -83,6 +85,8 @@ public abstract class Video {
 
     /** does nothing in this class*/
     public abstract double getRating();
+
+    public abstract double getRatingFromDatabase(Database database);
 
     /** getter for title */
     public String getTitle() {
