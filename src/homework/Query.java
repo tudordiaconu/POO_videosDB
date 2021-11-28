@@ -1,10 +1,7 @@
 package homework;
 
 import fileio.ActionInputData;
-
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public final class Query {
@@ -342,6 +339,7 @@ public final class Query {
         return serialsNames;
     }
 
+    /** method that returns a list of movie names, sorted by the number of views */
     public static ArrayList<String> moviesNumberViews(final Database database,
                                                       final ActionInputData actionInputData) {
         List<Movie> filteredMoviesListByYear = Movie.filterMoviesByYear(
@@ -386,6 +384,7 @@ public final class Query {
         return moviesNames;
     }
 
+    /** method that returns a list of serials names sorted by the number of views */
     public static ArrayList<String> serialsNumberViews(final Database database,
                                                        final ActionInputData actionInputData) {
         List<Serial> filteredSerialsListByYear = Serial.filterSerialsByYear(
@@ -431,6 +430,7 @@ public final class Query {
         return serialsNames;
     }
 
+    /** method that returns a list of movie names sorted by the ratings */
     public static ArrayList<String> moviesRatings(final Database database,
                                                   final ActionInputData actionInputData) {
         List<Movie> filteredMoviesListByYear = Movie.filterMoviesByYear(
@@ -473,6 +473,7 @@ public final class Query {
         return moviesNames;
     }
 
+    /** method that returns a list of serials names sorted by rating */
     public static ArrayList<String> serialsRatings(final Database database,
                                                    final ActionInputData actionInputData) {
         List<Serial> filteredSerialsListByYear = Serial.filterSerialsByYear(

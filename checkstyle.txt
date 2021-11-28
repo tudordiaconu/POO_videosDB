@@ -1,19 +1,2 @@
 Starting audit...
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Database.java:27:5: Class 'Database' looks like designed for extension (can be subclassed), but the method 'getInput' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Database' final or making the method 'getInput' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Database.java:31:5: Class 'Database' looks like designed for extension (can be subclassed), but the method 'getGenresMap' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Database' final or making the method 'getGenresMap' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Database.java:90:5: Method length is 215 lines (max allowed is 150). [MethodLength]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Database.java:225:13: 'if' is not followed by whitespace. [WhitespaceAround]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Movie.java:72:5: Class 'Movie' looks like designed for extension (can be subclassed), but the method 'getRatingFromDatabase' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Movie' final or making the method 'getRatingFromDatabase' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Movie.java:73:41: Parameter database should be final. [FinalParameters]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:5:8: Unused import - javax.xml.crypto.Data. [UnusedImports]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:7:8: Unused import - java.util.Comparator. [UnusedImports]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:345:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:389:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:434:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Query.java:476:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Recommendation.java:139:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Serial.java:74:5: Class 'Serial' looks like designed for extension (can be subclassed), but the method 'getRatingFromDatabase' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Serial' final or making the method 'getRatingFromDatabase' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Serial.java:75:41: Parameter database should be final. [FinalParameters]
-[ERROR] C:\Users\tudor\Desktop\An 2 Sem 1\POO\tema\.\src\homework\Video.java:89:5: Missing a Javadoc comment. [MissingJavadocMethod]
 Audit done.
-Checkstyle ends with 16 errors.

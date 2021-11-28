@@ -69,8 +69,9 @@ public class Movie extends Video {
         return rating;
     }
 
+    /** calculates the rating of movie from a wanted database */
     @Override
-    public double getRatingFromDatabase(Database database) {
+    public double getRatingFromDatabase(final Database database) {
         Movie auxMovie = database.getMovieMap().get(this.getTitle());
 
         return auxMovie.getRating();

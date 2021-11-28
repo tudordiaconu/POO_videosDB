@@ -136,6 +136,7 @@ public final class Recommendation {
         return videosName;
     }
 
+    /** method that returns the name of a video returned after the popular recommendation */
     public static String popularRecommendation(final Database database, final String username,
                                                final Input input) {
         User user = database.getUserMap().get(username);

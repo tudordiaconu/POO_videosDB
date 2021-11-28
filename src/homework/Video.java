@@ -83,9 +83,10 @@ public abstract class Video {
         return true;
     }
 
-    /** does nothing in this class*/
+    /** does nothing in this class */
     public abstract double getRating();
 
+    /** does nothing in this class */
     public abstract double getRatingFromDatabase(Database database);
 
     /** getter for title */
