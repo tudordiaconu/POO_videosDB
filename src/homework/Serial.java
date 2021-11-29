@@ -17,6 +17,98 @@ public class Serial extends Video {
         this.seasons = serialInputData.getSeasons();
     }
 
+    /** sorts a list of serials by the duration */
+    public static List<Serial> sortSerialListByDuration(final List<Serial> filteredSerials,
+                                                      final ActionInputData actionInputData) {
+        return filteredSerials.stream()
+                .sorted((serial1, serial2) -> {
+                    if (serial1.calculateDuration() == serial2.calculateDuration()) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return serial1.getTitle().compareTo(serial2.getTitle());
+                        } else {
+                            return serial2.getTitle().compareTo(serial1.getTitle());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return serial1.calculateDuration() - serial2.calculateDuration();
+                    } else {
+                        return serial2.calculateDuration() - serial1.calculateDuration();
+                    }
+                }).toList();
+    }
+
+    /** sorts a list of serials by the number of times it appears in the lists of favourites */
+    public static List<Serial> sortSerialListByFavorites(final List<Serial> filteredSerials,
+                                                       final Database database,
+                                                       final ActionInputData actionInputData) {
+        return filteredSerials.stream()
+                .sorted((serial1, serial2) -> {
+                    if (serial1.getNumberOfFavored(database)
+                            == serial2.getNumberOfFavored(database)) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return serial1.getTitle().compareTo(serial2.getTitle());
+                        } else {
+                            return serial2.getTitle().compareTo(serial1.getTitle());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return serial1.getNumberOfFavored(database)
+                                - serial2.getNumberOfFavored(database);
+                    } else {
+                        return serial2.getNumberOfFavored(database)
+                                - serial1.getNumberOfFavored(database);
+                    }
+                }).toList();
+    }
+
+    /** sorts a list of serials by the number of times it was viewed */
+    public static List<Serial> sortSerialsListByViews(final List<Serial> filteredSerials,
+                                                   final Database database,
+                                                   final ActionInputData actionInputData) {
+        return filteredSerials.stream()
+                .sorted((serial1, serial2) -> {
+                    if (serial1.getNumberOfViews(database)
+                            == serial2.getNumberOfViews(database)) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return serial1.getTitle().compareTo(serial2.getTitle());
+                        } else {
+                            return serial2.getTitle().compareTo(serial1.getTitle());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return serial1.getNumberOfViews(database)
+                                - serial2.getNumberOfViews(database);
+                    } else {
+                        return serial2.getNumberOfViews(database)
+                                - serial1.getNumberOfViews(database);
+                    }
+                }).toList();
+    }
+
+    /** sorts a list of serials by rating */
+    public static List<Serial> sortSerialListByRating(final List<Serial> filteredSerials,
+                                                       final ActionInputData actionInputData) {
+        return filteredSerials.stream()
+                .sorted((serial1, serial2) -> {
+                    if (serial1.getRating() == serial2.getRating()) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return serial1.getTitle().compareTo(serial2.getTitle());
+                        } else {
+                            return serial2.getTitle().compareTo(serial1.getTitle());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return Double.compare(serial1.getRating(), serial2.getRating());
+                    } else {
+                        return Double.compare(serial2.getRating(), serial1.getRating());
+                    }
+                }).toList();
+    }
+
     /** getter for the arraylist of seasons */
     public ArrayList<Season> getSeasons() {
         return seasons;

@@ -7,30 +7,21 @@ import java.util.List;
 public final class Query {
     private Query() { }
 
+    private static void removeIfNecessary(final List<String> list,
+                                    final ActionInputData actionInputData) {
+        int n = actionInputData.getNumber();
+        if (list.size() > n) {
+            while (list.size() != n) {
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+
     /** function for the user query */
     public static ArrayList<String> user(final Database database,
                                          final ActionInputData actionInputData) {
         ArrayList<String> usernames = new ArrayList<>();
-        List<User> users = database.getUserMap().values()
-                .stream()
-                .sorted((user1, user2) -> {
-                    int firstNumberRatings = user1.getNrGivenRatings();
-                    int secondNumberRatings = user2.getNrGivenRatings();
-
-                    if (firstNumberRatings == secondNumberRatings) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return user1.getUsername().compareTo(user2.getUsername());
-                        } else {
-                            return user2.getUsername().compareTo(user1.getUsername());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return firstNumberRatings - secondNumberRatings;
-                    } else {
-                        return secondNumberRatings - firstNumberRatings;
-                    }
-                }).toList();
+        List<User> users = User.sortUsers(database, actionInputData);
 
         for (User user : users) {
             if (user.getNrGivenRatings() > 0) {
@@ -38,13 +29,7 @@ public final class Query {
             }
         }
 
-        int n = actionInputData.getNumber();
-        if (usernames.size() > n) {
-            while (usernames.size() != n) {
-                usernames.remove(usernames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(usernames, actionInputData);
         return usernames;
     }
 
@@ -52,30 +37,7 @@ public final class Query {
     public static ArrayList<String> actorsAverage(final Database database,
                                                   final ActionInputData actionInputData) {
         ArrayList<String> actorNames = new ArrayList<>();
-        int n = actionInputData.getNumber();
-
-        List<Actor> actors = database.getActorMap().values()
-                .stream()
-                .sorted((actor1, actor2) -> {
-                    actor1.getAverageRating(database);
-                    actor2.getAverageRating(database);
-
-                    if (actor1.getAverageRating(database) == actor2.getAverageRating(database)) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return actor1.getName().compareTo(actor2.getName());
-                        } else {
-                            return actor2.getName().compareTo(actor1.getName());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return Double.compare(actor1.getAverageRating(database),
-                                actor2.getAverageRating(database));
-                    } else {
-                        return Double.compare(actor2.getAverageRating(database),
-                                actor1.getAverageRating(database));
-                    }
-                }).toList();
+        List<Actor> actors = Actor.sortActorsByRating(database, actionInputData);
 
         for (Actor actor : actors) {
             if (actor.getAverageRating(database) > 0) {
@@ -83,12 +45,7 @@ public final class Query {
             }
         }
 
-        if (actorNames.size() > n) {
-            while (actorNames.size() != n) {
-                actorNames.remove(actorNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(actorNames, actionInputData);
         return actorNames;
     }
 
@@ -102,32 +59,12 @@ public final class Query {
         List<Actor> actors = database.getActorMap().values().stream()
                 .filter(actor -> actor.checkAwards(awards)).toList();
 
-        List<Actor> sortedActors = actors.stream()
-                .sorted((actor1, actor2) -> {
-                    int firstNumberAwards = actor1.getNumberAwards();
-                    int secondNumberAwards = actor2.getNumberAwards();
-
-                    if (firstNumberAwards == secondNumberAwards) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return actor1.getName().compareTo(actor2.getName());
-                        } else {
-                            return actor2.getName().compareTo(actor1.getName());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return firstNumberAwards - secondNumberAwards;
-                    } else {
-                        return secondNumberAwards - firstNumberAwards;
-                    }
-                }).toList();
-
+        List<Actor> sortedActors = Actor.sortActorsByAwards(actors, actionInputData);
         for (Actor actor : sortedActors) {
             if (actor.getNumberAwards() > 0) {
                 actorNames.add(actor.getName());
             }
         }
-
         return actorNames;
     }
 
@@ -156,7 +93,6 @@ public final class Query {
         for (Actor actor : sortedActors) {
             actorNames.add(actor.getName());
         }
-
         return actorNames;
     }
 
@@ -167,38 +103,14 @@ public final class Query {
         List<Movie> filteredMovies = Movie.filterMoviesByGenre(
                 database, actionInputData, filteredMoviesListByYear);
 
-        List<Movie> sortedMovies = filteredMovies
-                .stream()
-                .sorted((movie1, movie2) -> {
-                    if (movie1.getDuration() == movie2.getDuration()) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return movie1.getTitle().compareTo(movie2.getTitle());
-                        } else {
-                            return movie2.getTitle().compareTo(movie1.getTitle());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return movie1.getDuration() - movie2.getDuration();
-                    } else {
-                        return movie2.getDuration() - movie1.getDuration();
-                    }
-                }).toList();
+        List<Movie> sortedMovies = Movie.sortMovieListByDuration(filteredMovies, actionInputData);
 
         ArrayList<String> moviesNames = new ArrayList<>();
-
         for (Movie movie : sortedMovies) {
             moviesNames.add(movie.getTitle());
         }
 
-        int n = actionInputData.getNumber();
-
-        if (moviesNames.size() > n) {
-            while (moviesNames.size() != n) {
-                moviesNames.remove(moviesNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(moviesNames, actionInputData);
         return moviesNames;
     }
 
@@ -210,38 +122,14 @@ public final class Query {
         List<Serial> filteredSerials = Serial.filterSerialsByGenre(
                     database, actionInputData, filteredSerialsListByYear);
 
-        List<Serial> sortedSerials = filteredSerials
-                .stream()
-                .sorted((serial1, serial2) -> {
-                    if (serial1.calculateDuration() == serial2.calculateDuration()) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return serial1.getTitle().compareTo(serial2.getTitle());
-                        } else {
-                            return serial2.getTitle().compareTo(serial1.getTitle());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return serial1.calculateDuration() - serial2.calculateDuration();
-                    } else {
-                        return serial2.calculateDuration() - serial1.calculateDuration();
-                    }
-                }).toList();
-
+        List<Serial> sortedSerials = Serial.sortSerialListByDuration(filteredSerials,
+                actionInputData);
         ArrayList<String> serialsNames = new ArrayList<>();
-
         for (Serial serial : sortedSerials) {
             serialsNames.add(serial.getTitle());
         }
 
-        int n = actionInputData.getNumber();
-
-        if (serialsNames.size() > n) {
-            while (serialsNames.size() != n) {
-                serialsNames.remove(serialsNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(serialsNames, actionInputData);
         return serialsNames;
     }
 
@@ -253,42 +141,17 @@ public final class Query {
         List<Movie> filteredMovies = Movie.filterMoviesByGenre(
             database, actionInputData, filteredMoviesListByYear);
 
-        List<Movie> sortedMovies = filteredMovies
-                .stream()
-                .sorted((movie1, movie2) -> {
-                    if (movie1.getNumberOfFavored(database)
-                            == movie2.getNumberOfFavored(database)) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return movie1.getTitle().compareTo(movie2.getTitle());
-                        } else {
-                            return movie2.getTitle().compareTo(movie1.getTitle());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return movie1.getNumberOfFavored(database)
-                                - movie2.getNumberOfFavored(database);
-                    } else {
-                        return movie2.getNumberOfFavored(database)
-                                - movie1.getNumberOfFavored(database);
-                    }
-                }).toList();
+        List<Movie> sortedMovies = Movie.sortMovieListByFavorites(filteredMovies, database,
+                actionInputData);
 
         ArrayList<String> moviesNames = new ArrayList<>();
-
         for (Movie movie : sortedMovies) {
             if (movie.getNumberOfFavored(database) > 0) {
                 moviesNames.add(movie.getTitle());
             }
         }
 
-        int n = actionInputData.getNumber();
-        if (moviesNames.size() > n) {
-            while (moviesNames.size() != n) {
-                moviesNames.remove(moviesNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(moviesNames, actionInputData);
         return moviesNames;
     }
 
@@ -300,42 +163,16 @@ public final class Query {
         List<Serial> filteredSerials = Serial.filterSerialsByGenre(
                 database, actionInputData, filteredSerialsListByYear);
 
-        List<Serial> sortedSerials = filteredSerials
-                .stream()
-                .sorted((serial1, serial2) -> {
-                    if (serial1.getNumberOfFavored(database)
-                            == serial2.getNumberOfFavored(database)) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return serial1.getTitle().compareTo(serial2.getTitle());
-                        } else {
-                            return serial2.getTitle().compareTo(serial1.getTitle());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return serial1.getNumberOfFavored(database)
-                                - serial2.getNumberOfFavored(database);
-                    } else {
-                        return serial2.getNumberOfFavored(database)
-                                - serial1.getNumberOfFavored(database);
-                    }
-                }).toList();
-
+        List<Serial> sortedSerials = Serial.sortSerialListByFavorites(filteredSerials,
+                database, actionInputData);
         ArrayList<String> serialsNames = new ArrayList<>();
-
         for (Serial serial : sortedSerials) {
             if (serial.getNumberOfFavored(database) > 0) {
                 serialsNames.add(serial.getTitle());
             }
         }
 
-        int n = actionInputData.getNumber();
-        if (serialsNames.size() > n) {
-            while (serialsNames.size() != n) {
-                serialsNames.remove(serialsNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(serialsNames, actionInputData);
         return serialsNames;
     }
 
@@ -347,40 +184,17 @@ public final class Query {
         List<Movie> filteredMovies = Movie.filterMoviesByGenre(
             database, actionInputData, filteredMoviesListByYear);
 
-        List<Movie> sortedMovies = filteredMovies.stream()
-                .sorted((movie1, movie2) -> {
-                    if (movie1.getNumberOfViews(database) == movie2.getNumberOfViews(database)) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return movie1.getTitle().compareTo(movie2.getTitle());
-                        } else {
-                            return movie2.getTitle().compareTo(movie1.getTitle());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return movie1.getNumberOfViews(database)
-                                - movie2.getNumberOfViews(database);
-                    } else {
-                        return movie2.getNumberOfViews(database)
-                                - movie1.getNumberOfViews(database);
-                    }
-                }).toList();
+        List<Movie> sortedMovies = Movie.sortMovieListByViews(filteredMovies, database,
+                actionInputData);
 
         ArrayList<String> moviesNames = new ArrayList<>();
-
         for (Movie movie : sortedMovies) {
             if (movie.getNumberOfViews(database) > 0) {
                 moviesNames.add(movie.getTitle());
             }
         }
 
-        int n = actionInputData.getNumber();
-        if (moviesNames.size() > n) {
-            while (moviesNames.size() != n) {
-                moviesNames.remove(moviesNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(moviesNames, actionInputData);
         return moviesNames;
     }
 
@@ -392,25 +206,8 @@ public final class Query {
         List<Serial> filteredSerials = Serial.filterSerialsByGenre(
                 database, actionInputData, filteredSerialsListByYear);
 
-        List<Serial> sortedSerials = filteredSerials.stream()
-                .sorted((serial1, serial2) -> {
-                    if (serial1.getNumberOfViews(database)
-                            == serial2.getNumberOfViews(database)) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return serial1.getTitle().compareTo(serial2.getTitle());
-                        } else {
-                            return serial2.getTitle().compareTo(serial1.getTitle());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return serial1.getNumberOfViews(database)
-                                - serial2.getNumberOfViews(database);
-                    } else {
-                        return serial2.getNumberOfViews(database)
-                                - serial1.getNumberOfViews(database);
-                    }
-                }).toList();
+        List<Serial> sortedSerials = Serial.sortSerialsListByViews(filteredSerials,
+                database, actionInputData);
 
         ArrayList<String> serialsNames = new ArrayList<>();
 
@@ -420,15 +217,11 @@ public final class Query {
             }
         }
 
-        int n = actionInputData.getNumber();
-        if (serialsNames.size() > n) {
-            while (serialsNames.size() != n) {
-                serialsNames.remove(serialsNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(serialsNames, actionInputData);
         return serialsNames;
     }
+
+
 
     /** method that returns a list of movie names sorted by the ratings */
     public static ArrayList<String> moviesRatings(final Database database,
@@ -438,22 +231,7 @@ public final class Query {
         List<Movie> filteredMovies = Movie.filterMoviesByGenre(
                 database, actionInputData, filteredMoviesListByYear);
 
-        List<Movie> sortedMovies = filteredMovies.stream()
-                .sorted((movie1, movie2) -> {
-                    if (movie1.getRating() == movie2.getRating()) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return movie1.getTitle().compareTo(movie2.getTitle());
-                        } else {
-                            return movie2.getTitle().compareTo(movie1.getTitle());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return Double.compare(movie1.getRating(), movie2.getRating());
-                    } else {
-                        return Double.compare(movie2.getRating(), movie1.getRating());
-                    }
-                }).toList();
+        List<Movie> sortedMovies = Movie.sortMovieListByRating(filteredMovies, actionInputData);
 
         ArrayList<String> moviesNames = new ArrayList<>();
 
@@ -463,13 +241,7 @@ public final class Query {
             }
         }
 
-        int n = actionInputData.getNumber();
-        if (moviesNames.size() > n) {
-            while (moviesNames.size() != n) {
-                moviesNames.remove(moviesNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(moviesNames, actionInputData);
         return moviesNames;
     }
 
@@ -481,23 +253,8 @@ public final class Query {
         List<Serial> filteredSerials = Serial.filterSerialsByGenre(
                 database, actionInputData, filteredSerialsListByYear);
 
-        List<Serial> sortedSerials = filteredSerials.stream()
-                .sorted((serial1, serial2) -> {
-                    if (serial1.getRating() == serial2.getRating()) {
-                        if (actionInputData.getSortType().equals("asc")) {
-                            return serial1.getTitle().compareTo(serial2.getTitle());
-                        } else {
-                            return serial2.getTitle().compareTo(serial1.getTitle());
-                        }
-                    }
-
-                    if (actionInputData.getSortType().equals("asc")) {
-                        return Double.compare(serial1.getRating(), serial2.getRating());
-                    } else {
-                        return Double.compare(serial2.getRating(), serial1.getRating());
-                    }
-                }).toList();
-
+        List<Serial> sortedSerials = Serial.sortSerialListByRating(filteredSerials,
+                actionInputData);
         ArrayList<String> serialsNames = new ArrayList<>();
 
         for (Serial serial : sortedSerials) {
@@ -506,13 +263,7 @@ public final class Query {
             }
         }
 
-        int n = actionInputData.getNumber();
-        if (serialsNames.size() > n) {
-            while (serialsNames.size() != n) {
-                serialsNames.remove(serialsNames.size() - 1);
-            }
-        }
-
+        Query.removeIfNecessary(serialsNames, actionInputData);
         return serialsNames;
     }
 }

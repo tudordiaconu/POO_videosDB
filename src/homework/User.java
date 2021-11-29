@@ -1,10 +1,12 @@
 package homework;
 
 import entertainment.Season;
+import fileio.ActionInputData;
 import fileio.UserInputData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class User {
@@ -24,6 +26,30 @@ public class User {
         this.moviesGivenRatings = new HashMap<>();
         this.seasonsGivenRatings = new HashMap<>();
         this.nrGivenRatings = 0;
+    }
+
+    /** sorts a list of users by number of ratings given */
+    public static List<User> sortUsers(final Database database,
+                                       final ActionInputData actionInputData) {
+        return database.getUserMap().values().stream()
+                .sorted((user1, user2) -> {
+                    int firstNumberRatings = user1.getNrGivenRatings();
+                    int secondNumberRatings = user2.getNrGivenRatings();
+
+                    if (firstNumberRatings == secondNumberRatings) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return user1.getUsername().compareTo(user2.getUsername());
+                        } else {
+                            return user2.getUsername().compareTo(user1.getUsername());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return firstNumberRatings - secondNumberRatings;
+                    } else {
+                        return secondNumberRatings - firstNumberRatings;
+                    }
+                }).toList();
     }
 
     /** getter for the number of ratings given */

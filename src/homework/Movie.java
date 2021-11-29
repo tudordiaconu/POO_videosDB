@@ -14,6 +14,97 @@ public class Movie extends Video {
         this.duration = movieInputData.getDuration();
     }
 
+    /** sorts a list of movies by the duration */
+    public static List<Movie> sortMovieListByDuration(final List<Movie> filteredMovies,
+                                                    final ActionInputData actionInputData) {
+        return filteredMovies.stream()
+                .sorted((movie1, movie2) -> {
+                    if (movie1.getDuration() == movie2.getDuration()) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return movie1.getTitle().compareTo(movie2.getTitle());
+                        } else {
+                            return movie2.getTitle().compareTo(movie1.getTitle());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return movie1.getDuration() - movie2.getDuration();
+                    } else {
+                        return movie2.getDuration() - movie1.getDuration();
+                    }
+                }).toList();
+    }
+
+    /** sorts a list of movies by the number of times it appears in the lists of favourites */
+    public static List<Movie> sortMovieListByFavorites(final List<Movie> filteredMovies,
+                                                       final Database database,
+                                                       final ActionInputData actionInputData) {
+        return filteredMovies.stream()
+                .sorted((movie1, movie2) -> {
+                    if (movie1.getNumberOfFavored(database)
+                            == movie2.getNumberOfFavored(database)) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return movie1.getTitle().compareTo(movie2.getTitle());
+                        } else {
+                            return movie2.getTitle().compareTo(movie1.getTitle());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return movie1.getNumberOfFavored(database)
+                                - movie2.getNumberOfFavored(database);
+                    } else {
+                        return movie2.getNumberOfFavored(database)
+                                - movie1.getNumberOfFavored(database);
+                    }
+                }).toList();
+}
+
+    /** sorts a list of movies by the number of times it was viewed */
+    public static List<Movie> sortMovieListByViews(final List<Movie> filteredMovies,
+                                                   final Database database,
+                                                   final ActionInputData actionInputData) {
+        return filteredMovies.stream()
+                .sorted((movie1, movie2) -> {
+                    if (movie1.getNumberOfViews(database) == movie2.getNumberOfViews(database)) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return movie1.getTitle().compareTo(movie2.getTitle());
+                        } else {
+                            return movie2.getTitle().compareTo(movie1.getTitle());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return movie1.getNumberOfViews(database)
+                                - movie2.getNumberOfViews(database);
+                    } else {
+                        return movie2.getNumberOfViews(database)
+                                - movie1.getNumberOfViews(database);
+                    }
+                }).toList();
+    }
+
+    /** sorts a list of movies by rating */
+    public static List<Movie> sortMovieListByRating(final List<Movie> filteredMovies,
+                                            final ActionInputData actionInputData) {
+        return filteredMovies.stream()
+                .sorted((movie1, movie2) -> {
+                    if (movie1.getRating() == movie2.getRating()) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return movie1.getTitle().compareTo(movie2.getTitle());
+                        } else {
+                            return movie2.getTitle().compareTo(movie1.getTitle());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return Double.compare(movie1.getRating(), movie2.getRating());
+                    } else {
+                        return Double.compare(movie2.getRating(), movie1.getRating());
+                    }
+                }).toList();
+    }
+
     /** filters the movies by year */
     public static List<Movie> filterMoviesByYear(final Database database,
                                                  final ActionInputData actionInputData) {

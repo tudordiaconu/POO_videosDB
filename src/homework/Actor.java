@@ -2,6 +2,7 @@ package homework;
 
 import java.util.List;
 import actor.ActorsAwards;
+import fileio.ActionInputData;
 import fileio.ActorInputData;
 
 import java.util.ArrayList;
@@ -49,6 +50,56 @@ public class Actor {
         }
 
         return rating / numberOfMoviesInMap;
+    }
+
+    /** sorts a list of actors by rating */
+    public static List<Actor> sortActorsByRating(final Database database,
+                                                 final ActionInputData actionInputData) {
+        return database.getActorMap().values().stream()
+                .sorted((actor1, actor2) -> {
+                    actor1.getAverageRating(database);
+                    actor2.getAverageRating(database);
+
+                    if (actor1.getAverageRating(database) == actor2.getAverageRating(database)) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return actor1.getName().compareTo(actor2.getName());
+                        } else {
+                            return actor2.getName().compareTo(actor1.getName());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return Double.compare(actor1.getAverageRating(database),
+                                actor2.getAverageRating(database));
+                    } else {
+                        return Double.compare(actor2.getAverageRating(database),
+                                actor1.getAverageRating(database));
+                    }
+                }).toList();
+    }
+
+    /** sorts a list of actors by number of awards */
+    public static List<Actor> sortActorsByAwards(final List<Actor> actors,
+                                                 final ActionInputData actionInputData) {
+        return actors.stream()
+                .sorted((actor1, actor2) -> {
+                    int firstNumberAwards = actor1.getNumberAwards();
+                    int secondNumberAwards = actor2.getNumberAwards();
+
+                    if (firstNumberAwards == secondNumberAwards) {
+                        if (actionInputData.getSortType().equals("asc")) {
+                            return actor1.getName().compareTo(actor2.getName());
+                        } else {
+                            return actor2.getName().compareTo(actor1.getName());
+                        }
+                    }
+
+                    if (actionInputData.getSortType().equals("asc")) {
+                        return firstNumberAwards - secondNumberAwards;
+                    } else {
+                        return secondNumberAwards - firstNumberAwards;
+                    }
+                }).toList();
     }
 
     /** calculate total number of awards won*/

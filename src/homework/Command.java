@@ -2,12 +2,25 @@ package homework;
 
 import entertainment.Season;
 import fileio.ActionInputData;
+import fileio.Writer;
+import org.json.simple.JSONArray;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Command {
     private Command() { }
 
     /** Function which does the view command */
-    public static void view(final String username, final String title, final Database database) {
+    @SuppressWarnings("unchecked")
+    public static void view(final Database database, final ActionInputData actionInputData,
+                            final Writer writer, final JSONArray arrayResult) throws IOException {
+        String username = actionInputData.getUsername();
+        String title = actionInputData.getTitle();
+        List<String> genres = new ArrayList<>();
+        int nrViews = 0;
+
         User user = database.getUserMap().get(username);
         if (user.getHistory().containsKey(title)) {
             user.getHistory().put(title, user.getHistory().get(title) + 1);
@@ -17,25 +30,26 @@ public final class Command {
 
         if (database.getMovieMap().containsKey(title)) {
             Movie movie = database.getMovieMap().get(title);
-            for (String genre : movie.getGenres()) {
-                if (!database.getGenresMap().containsKey(genre)) {
-                    database.getGenresMap().put(genre, movie.getNumberOfViews(database));
-                } else {
-                    database.getGenresMap().put(genre, database.getGenresMap().get(genre)
-                            + 1);
-                }
-            }
+            genres = movie.getGenres();
+            nrViews = movie.getNumberOfViews(database);
         } else if (database.getSerialMap().containsKey(title)) {
             Serial serial = database.getSerialMap().get(title);
-            for (String genre : serial.getGenres()) {
-                if (!database.getGenresMap().containsKey(genre)) {
-                    database.getGenresMap().put(genre, serial.getNumberOfViews(database));
-                } else {
-                    database.getGenresMap().put(genre, database.getGenresMap().get(genre)
-                            + 1);
-                }
+            genres = serial.getGenres();
+            nrViews = serial.getNumberOfViews(database);
+        }
+
+        for (String genre : genres) {
+            if (!database.getGenresMap().containsKey(genre)) {
+                database.getGenresMap().put(genre, nrViews);
+            } else {
+                database.getGenresMap().put(genre, database.getGenresMap().get(genre) + 1);
             }
         }
+
+        arrayResult.add(writer.writeFile(actionInputData.getActionId(), "", "success -> "
+                + actionInputData.getTitle() + " was viewed with total views of "
+                + database.getUserMap().get(actionInputData.getUsername()).getHistory()
+                .get(actionInputData.getTitle())));
     }
 
     /** Function which does the favorite command */
