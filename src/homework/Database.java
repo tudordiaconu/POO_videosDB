@@ -19,9 +19,7 @@ public class Database {
     private final Map<String, Movie> movieMap;
     private final Map<String, Serial> serialMap;
     private final Map<String, User> userMap;
-
     private final Input input;
-
     private final Map<String, Integer> genresMap;
 
     /** getter for hashmap of genres */
@@ -257,8 +255,8 @@ public class Database {
                 "PopularRecommendation cannot be applied!"));
     }
 
-    /** method which does the commands given to the input */
-    public void command(final Writer writer, final JSONArray arrayResult) throws IOException {
+    /** method which does the action given to the input */
+    public void action(final Writer writer, final JSONArray arrayResult) throws IOException {
         for (ActionInputData actionInputData : input.getCommands()) {
             switch (actionInputData.getActionType()) {
                 default -> {

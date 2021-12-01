@@ -73,7 +73,7 @@ public final class Main {
         //TODO add here the entry point to your implementation
 
         Database database = new Database(input);
-        database.command(fileWriter, arrayResult);
+        database.action(fileWriter, arrayResult);
 
         fileWriter.closeJSON(arrayResult);
     }

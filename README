@@ -1,0 +1,94 @@
+Copyright 2021 Diaconu Tudor-Gabriel
+
+Tema 1 POO - VideosDB
+
+Pentru a rezolva tema, mi-am construit eu un package nou, numit homework in
+care mi-am creat toate clasele noi pe care le-am folosit pentru rezolvarea
+temei.
+
+Pentru inceput, mi-am creat propriile mele clase de Actor, Movie, Serial, Video
+si User, inspirandu-ma putin din structura claselor date de voi prin schelet,
+cele cu "InputData", insa am adaugat pe parcurs field-uri si metode noi in
+aceste clase, in functie de nevoia pe care o creau diversele cerinte.
+
+Apoi, mi-am creat clasa de Database, in care am stocat cate un hashmap pentru
+useri, filme, seriale, actori si genuri. De asemenea, ca field in database am
+dat si un input, prin care populam aceste hashmap-uri cu datele de intrare
+oferite in JSON-uri, acest lucru facandu-l prin intermediul metodelor
+"add*ToDatabase".
+De asemenea, in acest database se regasesc si metodele aferente fiecarui tip
+de actiune posibila, fie ea comanda, query, sau recomandare, ele fiind
+transmise main-ului prin intermediul metodei "action". Pentru fiecare tip
+de actiune, am implementat cate o clasa care continea metode statice pe care
+le apelam in momentul in care in input era ceruta respectiva actiune.
+
+In clasa Command, metoda view efectueaza si printarea, in timp ce metodele
+favorite si rating returneaza un int care semnaleaza cazul in care se afla
+respectivul user.
+
+Metodele de query din database apeleaza metode statice din clasa Query. Acestea
+returneaza liste de string-uri care reprezinta, depinzand de situatie, numele
+actorilor, filmelor, serialelor sau a userilor. In metodele statice
+implementate in clasa Query, ideea de baza este aceeasi pentru toate. In primul
+rand, m-am folosit de stream-uri care mi-au usurat munca pe care o presupunea
+filtrarea si sortarea listelor. Metodele de sortare ale diverselor obiecte
+sunt metode statice, care se gasesc in fiecare clasa.
+
+Spre exemplu, clasa de actori contine sortari dupa numarul de awards-uri si
+dupa ratingul average al filmelor. De asemenea, aceasta clasa contine o metoda
+care calculeaza rating-ul average al unui actor si o metoda care calculeaza
+numarul total de awards-uri, ambele fiind utile pentru sortari. Pentru
+filtrarea dupa premii, am folosit o metoda booleana. Pentru filtrarea dupa
+cuvintele gasite in descrierea carierei m-am folosit de metoda split care
+spargea descrierea intr-o lista de cuvinte, prin care cautam apoi fiecare
+cuvant dat in filtru.
+
+Clasele de serial si movie extind clasa de video, intrucat au campuri comune,
+insa acestea au si metode care se comporta diferit, intrucat metoda de calcul
+a rating-ului pentru film se bazeaza pe rating-urile date direct filmului, insa
+metoda de calcul a rating-ului pentru serial se bazeaza pe rating-urile date pe
+sezoane. De asemenea, aceste 2 clase au fiecare metode statice de sortare a
+listelor de seriale/filme care se comporta asemanator, folosindu-se de asemenea
+de metoda de sortare a stream-urilor din Java. Ar trebui sa mentionez si faptul
+ca, pentru filtrarea filmelor si a serialelor, am considerat ca cel mai bine ar
+fi sa filtrez intai dupa an, apoi sa preiau lista de filme/seriale filtrata
+dupa an si sa o filtrez la randul ei dupa gen. Aceste metode de filtrare
+utilizeaza metode implementate in clasa Video, intrucat nu existau implementari
+specifice, in caz ca erau serial sau film.
+
+Pentru sortarea userilor, m-am folosit de o variabila in care tineam minte
+numarul de rating-uri date pentru fiecare user, variabila pe care o incrementam
+de fiecare data cand userul respectiv apela comanda rating. Atat in cazul
+videourilor, cat si in cazul userilor, metodele din Query, returneaza o lista
+de string-uri care reprezinta lista cu numele userilor/filmelor/serialelor.
+
+Pentru recomandari, am implementat Clasa Recommendation, care contine cate o
+metoda statica pentru fiecare tip de recomandare. Metoda standard parcurge
+listele din input, intrucat daca parcurgeam hashmap-urile din database, nu
+se pastra ordinea din baza de date data ca input, si returneaza primul video
+nevazut de user. Am facut initial for-ul pe lista de filme, deoarece am vazut
+ca in baza de date intai sunt declarate filmele si apoi serialele. In metoda
+de Best Unseen, am populat o lista de video-uri cu cele gasite in listele din
+input. Apoi, am sortat aceasta lista, insa am fost nevoit sa fac o alta metoda
+diferita de cea folosita anterior pentru calcularea ratingului, intrucat aceste
+videouri nu aveau asociate un rating, ele nefiind cele din hashmap-uri. Asa
+ca am construit o metoda care cauta un video in hashmap-urile din database dupa
+nume si apoi calcula rating-ul. Recomandarea de favorite se comporta asemanator
+cu cea de Best Unseen, insa aceasta adauga in lista de videouri doar videourile
+cu minim o aparitie in liste de favorite si compara videourile dupa numarul de
+aparitii in aceste liste. Recomandarea de search implica filtrarea filmelor si
+a serialelor dupa gen si adaugarea lor intr-o lista de video-uri pe care am
+sortat-o apoi dupa rating.
+Pentru recomandarea popular, mi-am construit un hashmap al genurilor, care
+contine numele unui gen si numarul de vizionari ale respectivului gen. Acest
+numar de vizionari este initializat la initializarea database-ului si este
+incrementat de fiecare data cand are loc o comanda de vizionare. Astfel, am
+reusit sa obtin o lista de genuri, sortate dupa numarul de vizionari, care m-a
+ajutat apoi sa implementez pana la capat comanda.
+
+Feedback tema:  A fost o tema foarte interesanta, initial m-am speriat tare de
+                ea pentru ca nu intelegeam nimic din schelet, insa am luat-o
+                usor, usor si am reusit sa o fac pe teste, ajungand la
+                concluzia ca e o tema foarte misto cu care sa imi incep
+                experienta in POO si cu care sa ma pot mandri ca am reusit sa o
+                fac. Kudos to you!
